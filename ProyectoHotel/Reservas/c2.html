@@ -1,0 +1,756 @@
+<!DOCTYPE
+html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horizon Prime Hotel - Check-in</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --primary-light: #3b82f6;
+      --primary-lighter: #93c5fd;
+      --secondary: #0f172a;
+      --secondary-light: #1e293b;
+      --accent: #0ea5e9;
+      --white: #ffffff;
+      --light: #f1f5f9;
+      --light-blue: #e0f2fe;
+      --gray: #64748b;
+      --dark: #0f172a;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+      background-color: var(--light);
+    }
+
+  
+    .navbar {
+      background-color: var(--white);
+      box-shadow: var(--shadow);
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background-color: var(--primary);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .logo-text {
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-link {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 0;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+  
+    .page-header {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      color: var(--white);
+      padding: 30px 0;
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+      font-size: 1rem;
+      color: var(--primary-lighter);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+
+    .main-content {
+      padding: 40px 0;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    
+    .card {
+      background-color: var(--white);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .card-header {
+      background-color: var(--primary-dark);
+      color: var(--white);
+      padding: 15px 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--secondary-light);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--light-blue);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+
+  
+    .selected-services {
+      margin-top: 20px;
+    }
+
+    .service-list {
+      list-style: none;
+      margin-top: 15px;
+    }
+
+    .service-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      background-color: var(--light-blue);
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .service-icon {
+      display: none;
+    }
+
+    .service-details {
+      flex-grow: 1;
+    }
+
+    .service-name {
+      font-weight: 500;
+      color: var(--primary-dark);
+    }
+
+    .service-price {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+
+    .service-remove {
+      color: var(--gray);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .service-remove:hover {
+      color: #ef4444;
+    }
+
+    .room-summary {
+      display: flex;
+      background-color: var(--light-blue);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .room-image {
+      display: none;
+    }
+
+    .room-details {
+      padding: 12px;
+      flex-grow: 1;
+    }
+
+    .room-name {
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 5px;
+    }
+
+    .room-info {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    
+    .price-summary {
+      margin-top: 20px;
+      background-color: var(--light-blue);
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .price-row:last-child {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(100, 116, 139, 0.2);
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .price-label {
+      color: var(--gray);
+    }
+
+    .price-value {
+      font-weight: 500;
+    }
+
+    
+    .payment-methods {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .payment-method {
+      flex: 1;
+      border: 2px solid var(--light-blue);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .payment-method:hover {
+      border-color: var(--primary-light);
+    }
+
+    .payment-method.active {
+      border-color: var(--primary);
+      background-color: var(--light-blue);
+    }
+
+    .payment-icon {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .payment-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    
+    .footer {
+      background-color: var(--secondary);
+      color: var(--light);
+      padding: 20px 0;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .footer p {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    
+    @media (max-width: 768px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  
+  <header class="page-header">
+    <div class="container">
+      <h1 class="page-title">Finalizar Reserva</h1>
+      <p class="page-subtitle">Complete sus datos para confirmar su reserva</p>
+    </div>
+  </header>
+
+  
+  <section class="main-content">
+    <div class="container">
+      <div class="checkout-grid">
+       
+        <div class="card">
+          <div class="card-header">
+            Información del Huésped
+          </div>
+          <div class="card-body">
+            <form id="checkout-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="first-name">Nombre Completo</label>
+                  <input type="text" id="first-name" class="form-control" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Teléfono</label>
+                <input type="tel" id="phone" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="arrival-date">Fecha de llegada</label>
+                <input type="date" id="arrival-date" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="departure-date">Fecha de salida</label>
+                <input type="date" id="departure-date" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label>Método de pago</label>
+                <div class="payment-methods">
+                  <div class="payment-method active" data-method="credit-card">
+                    <div class="payment-icon">
+                      <i class="far fa-credit-card"></i>
+                    </div>
+                    <div class="payment-name">Tarjeta</div>
+                  </div>
+
+                  <div class="payment-method" data-method="paypal">
+                    <div class="payment-icon">
+                      <i class="fab fa-paypal"></i>
+                    </div>
+                    <div class="payment-name">PayPal</div>
+                  </div>
+
+                  <div class="payment-method" data-method="bank">
+                    <div class="payment-icon">
+                      <i class="fas fa-university"></i>
+                    </div>
+                    <div class="payment-name">Transferencia</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="btn-group">
+                <a href="../Reservas/ServiciosExtra.html" class="btn btn-outline">Volver a servicios</a>
+                <a href="../Reservas/LoderCheckin.html" class="btn btn-primary">Confirmar Reserva</a>
+
+              </div>
+            </form>
+          </div>
+        </div>
+
+        
+        <div class="card">
+          <div class="card-header">
+            Resumen de Reserva
+          </div>
+          <div class="card-body">
+           
+            <div class="room-summary">
+              <img src="https://placehold.co/120x20hite" alt="Habitación Deluxe" class="room-image" id="room-image">
+              <div class="room-details">
+                <h3 class="room-name" id="nombreHabitacion">Habitación Deluxe</h3>
+                <p class="room-info" id="room-info"></p>
+              </div>
+            </div>
+
+            
+            <div class="selected-services">
+              <h3>Servicios seleccionados</h3>
+              <ul class="service-list" id="service-list">
+              </ul>
+            </div>
+
+           
+            <div class="price-summary">
+              <div class="price-row">
+                <div class="price-label">Habitación</div>
+                <div class="price-value" id="room-price">$1.200.000</div>
+              </div>
+
+              <div class="price-row">
+                <div class="price-label">Servicios</div>
+                <div class="price-value" id="services-price">$0.00</div>
+              </div>
+
+              <div class="price-row">
+                <div class="price-label">Impuestos (16%)</div>
+                <div class="price-value" id="tax-price">$280.00</div>
+              </div>
+
+              <div class="price-row">
+                <div class="price-label">Total</div>
+                <div class="price-value" id="total-price">$1.600.000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; <span id="current-year">2025</span> Horizon Prime Hotel. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  fetch("reservas.php")
+    .then(response => response.json())
+    .then(data => {
+      if (!data.error) {
+        document.getElementById("first-name").value = data.nombre;
+        document.getElementById("email").value = data.email;
+        document.getElementById("phone").value = data.telefono;
+        document.getElementById("arrival-date").value = data.fecha_entrada;
+        document.getElementById("departure-date").value = data.fecha_salida;
+      
+          // Calcular noches de estadía
+          const checkIn = new Date(data.fecha_entrada);
+        const checkOut = new Date(data.fecha_salida);
+        const nights = Math.max((checkOut - checkIn) / (1000 * 60 * 60 * 24), 1); // Asegurar mínimo 1 noche
+        
+        roomData.nights = nights;
+        
+        updateRoomDisplay(); // Asegurar que el precio se actualiza con las noches correctas
+      } else {
+        console.error("No se encontraron reservas");
+      }
+    })
+    .catch(error => console.error("Error:", error));
+
+  // Obtener el nombre de la habitación desde la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const habitacion = urlParams.get('habitacion') || "Habitación Deluxe"; // Valor por defecto
+
+  // Definir roomData asegurando que la habitación venga de la URL
+  const roomData = {
+    name: habitacion,  
+    image: "https://placehold.co/600x400/blue/white",
+    price: 350,
+    nights: 1
+  };
+
+  // Mostrar el nombre de la habitación en el HTML
+  document.getElementById("nombreHabitacion").textContent = roomData.name;
+});
+
+// Actualizar el año automáticamente
+document.getElementById("current-year").textContent = new Date().getFullYear();
+
+    const availableServices = [
+      { id: 1, name: "Servicio a la habitación", price: 50, icon: "fas fa-concierge-bell", priceType: "por_dia" },
+      { id: 2, name: "Experiencia Gastronómica", price: 120, icon: "fas fa-utensils", priceType: "por_dia" },
+      { id: 3, name: "Traslado Ejecutivo", price: 75, icon: "fas fa-car-side", priceType: "por_trayecto" },
+      { id: 4, name: "Spa Premium", price: 90, icon: "fas fa-spa", priceType: "por_persona" },
+      { id: 5, name: "Tour Guiado", price: 60, icon: "fas fa-map-marked-alt", priceType: "por_persona" },
+      { id: 6, name: "Acceso VIP Club", price: 40, icon: "fas fa-glass-cheers", priceType: "por_dia" }
+    ];
+
+    function getSelectedServices() {
+      const storedServices = localStorage.getItem('selectedServices');
+      return storedServices ? JSON.parse(storedServices) : [];
+    }
+
+    
+    function renderSelectedServices() {
+      const serviceList = document.getElementById('service-list');
+      serviceList.innerHTML = ''; 
+
+      const selectedServices = getSelectedServices();
+      let totalServicesPrice = 0;
+
+      if (selectedServices.length === 0) {
+        serviceList.innerHTML = '<p>No se han seleccionado servicios adicionales.</p>';
+        return;
+      }
+
+      selectedServices.forEach(service => {
+       
+        const priceNumber = parseFloat(service.price.replace(/[^0-9.]/g, ""));
+        totalServicesPrice += priceNumber;
+
+       
+        const serviceItem = document.createElement('li');
+        serviceItem.className = 'service-item';
+        serviceItem.innerHTML = `
+  <div class="service-details">
+    <div class="service-name">${service.title}</div>
+    <div class="service-price">${service.price}</div>
+  </div>
+  <button class="service-remove" data-title="${service.title}">
+    <i class="fas fa-times"></i>
+  </button>
+`;
+
+
+        serviceList.appendChild(serviceItem);
+      });
+
+     
+      document.getElementById('services-price').textContent = `$${totalServicesPrice.toFixed(2)}`;
+
+      
+      updateTotalPrice(roomData.price * roomData.nights, totalServicesPrice);
+
+   
+      document.querySelectorAll('.service-remove').forEach(button => {
+        button.addEventListener('click', function () {
+          const serviceTitle = this.getAttribute('data-title');
+          removeService(serviceTitle);
+        });
+      });
+    }
+
+    function removeService(serviceId) {
+      const selectedServiceIds = getSelectedServices();
+      const updatedServices = selectedServiceIds.filter(id => id !== serviceId);
+
+      
+      localStorage.setItem('selectedServices', JSON.stringify(updatedServices));
+
+    
+      renderSelectedServices();
+    }
+
+   
+    function updateTotalPrice(roomPrice, servicesPrice) {
+  const subtotal = roomPrice + servicesPrice;
+  const tax = subtotal * 0.16; // 16% de impuesto
+  const total = subtotal + tax;
+
+  // Convertir el total a formato moneda con separadores de miles
+  const formattedTotal = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0
+  }).format(total);
+
+  // Mostrar valores actualizados
+  document.getElementById('room-price').textContent = `$${roomPrice.toLocaleString('es-CO')}`;
+  document.getElementById('tax-price').textContent = `$${tax.toLocaleString('es-CO')}`;
+  document.getElementById('total-price').textContent = formattedTotal;
+}
+
+    function updateRoomDisplay() {
+      // Update room details in the UI
+      document.getElementById('room-name').textContent = roomData.name;
+      document.getElementById('room-info').textContent = `${roomData.adults} adultos · ${roomData.nights} noches`;
+      document.getElementById('room-image').src = roomData.image;
+      document.getElementById('room-image').alt = roomData.name;
+      
+      // Update room price in summary
+      const roomTotalPrice = roomData.price * roomData.nights;
+      document.getElementById('room-price').textContent = `$${roomTotalPrice.toFixed(2)}`;
+      
+      // Update total price
+      const servicesPrice = parseFloat(document.getElementById('services-price').textContent.replace(/[^0-9.]/g, "")) || 0;
+      updateTotalPrice(roomTotalPrice, servicesPrice);
+    }
+
+    // Function to initialize the page
+    function initPage() {
+      // Render selected services
+      renderSelectedServices();
+
+      // Set default dates
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      const checkoutDate = new Date(today);
+      checkoutDate.setDate(checkoutDate.getDate() + roomData.nights);
+
+      document.getElementById('arrival-date').valueAsDate = today;
+      document.getElementById('departure-date').valueAsDate = checkoutDate;
+
+      // Payment method selection
+      const paymentMethods = document.querySelectorAll('.payment-method');
+      paymentMethods.forEach(method => {
+        method.addEventListener('click', function () {
+          paymentMethods.forEach(m => m.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // Form submission
+      document.getElementById('checkout-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        alert('¡Reserva completada con éxito! Gracias por elegir Horizon Prime Hotel.');
+      });
+    }
+
+    // Initialize the page when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initPage);
+  </script>
+</body>
+
+</html>

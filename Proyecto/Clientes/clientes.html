@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel ERP - Sistema de Gestión</title>
+    <link rel="stylesheet" href="clientes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Hotel</h2>
+            </div>
+            <div class="module-badge">CLIENTES</div>
+            <div class="admin-profile">
+                <div class="avatar">A</div>
+                <div class="admin-info">
+                    <h3>Admin</h3>
+                    <p>Administrador</p>
+                </div>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li class="active" data-page="dashboard">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </li>
+                    <li data-page="checkin">
+                        <i class="fas fa-user-check"></i> Check-in Cliente
+                    </li>
+                    <li data-page="search">
+                        <i class="fas fa-search"></i> Buscar Cliente
+                    </li>
+                    <li data-page="history">
+                        <i class="fas fa-history"></i> Historial
+                    </li>
+                    <li data-page="reports">
+                        <i class="fas fa-file-alt"></i> Reportes
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-module">
+                    <i class="fas fa-exchange-alt"></i> Cambiar Módulo
+                </button>
+                <button class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+                <p class="copyright">© 2025 Hotel Manager</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Page -->
+            <div class="page" id="dashboard">
+                <h1>Dashboard de Clientes</h1>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h2 id="total-clientes">0</h2>
+                            <p>Total Clientes</p>
+                            <small>Registrados</small>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h2 id="huespedes-actuales">0</h2>
+                            <p>Huéspedes Actuales</p>
+                            <small>Hospedados</small>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h2 id="checkins-mes">0</h2>
+                            <p>Check-ins</p>
+                            <small>Este mes</small>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-times"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h2 id="checkouts-mes">0</h2>
+                            <p>Check-outs</p>
+                            <small>Este mes</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-section">
+                    <div class="section-header">
+                        <h2>Clientes Recientes</h2>
+                        <a href="#" class="view-all">Ver todos</a>
+                    </div>
+                    <div class="table-container">
+                        <table id="clientes-recientes">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Documento</th>
+                                    <th>Habitación</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Los datos se cargarán dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bottom-sections">
+                    <div class="table-section consumos">
+                        <div class="section-header">
+                            <h2>Consumos Recientes</h2>
+                            <a href="#" class="view-all">Ver todos</a>
+                        </div>
+                        <div class="table-container">
+                            <table id="consumos-recientes">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Cliente</th>
+                                        <th>Habitación</th>
+                                        <th>Servicio</th>
+                                        <th>Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Los datos se cargarán dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="chart-section">
+                        <h2>Ocupación por Tipo</h2>
+                        <div class="chart-container" id="ocupacion-chart">
+                            <!-- Aquí irá el gráfico -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Check-in Page -->
+            <div class="page" id="checkin" style="display: none;">
+                <h1>Check-in de Cliente</h1>
+                <div class="form-container">
+                    <form id="checkin-form">
+                        <div class="form-section">
+                            <h2>Información Personal</h2>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="nombre">Nombre Completo</label>
+                                    <input type="text" id="nombre" name="nombre" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="documento">Documento de Identidad</label>
+                                    <input type="text" id="documento" name="documento" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="telefono">Teléfono</label>
+                                    <input type="tel" id="telefono" name="telefono" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Correo Electrónico</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="nacionalidad">Nacionalidad</label>
+                                    <input type="text" id="nacionalidad" name="nacionalidad" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="direccion">Dirección</label>
+                                    <input type="text" id="direccion" name="direccion" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h2>Información de Estancia</h2>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="habitacion">Habitación</label>
+                                    <select id="habitacion" name="habitacion" required>
+                                        <option value="">Seleccionar habitación</option>
+                                        <option value="101">101 - Individual</option>
+                                        <option value="102">102 - Individual</option>
+                                        <option value="201">201 - Doble</option>
+                                        <option value="202">202 - Doble</option>
+                                        <option value="301">301 - Suite</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tipo-habitacion">Tipo de Habitación</label>
+                                    <select id="tipo-habitacion" name="tipo-habitacion" disabled>
+                                        <option value="individual">Individual</option>
+                                        <option value="doble">Doble</option>
+                                        <option value="suite">Suite</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fecha-checkin">Fecha Check-in</label>
+                                    <input type="date" id="fecha-checkin" name="fecha-checkin" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fecha-checkout">Fecha Check-out</label>
+                                    <input type="date" id="fecha-checkout" name="fecha-checkout" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="num-huespedes">Número de Huéspedes</label>
+                                    <input type="number" id="num-huespedes" name="num-huespedes" min="1" max="4" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tarifa">Tarifa Diaria</label>
+                                    <input type="number" id="tarifa" name="tarifa" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h2>Método de Pago</h2>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="metodo-pago">Método de Pago</label>
+                                    <select id="metodo-pago" name="metodo-pago" required>
+                                        <option value="">Seleccionar método</option>
+                                        <option value="efectivo">Efectivo</option>
+                                        <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                        <option value="transferencia">Transferencia Bancaria</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="tarjeta-container" style="display: none;">
+                                    <label for="num-tarjeta">Número de Tarjeta</label>
+                                    <input type="text" id="num-tarjeta" name="num-tarjeta">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="total-estancia">Total Estimado</label>
+                                    <input type="text" id="total-estancia" name="total-estancia" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="deposito">Depósito</label>
+                                    <input type="number" id="deposito" name="deposito" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="btn-cancelar-checkin">Cancelar</button>
+                            <button type="submit" class="btn-primary">Completar Check-in</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Search Client Page -->
+            <div class="page" id="search" style="display: none;">
+                <h1>Buscar Cliente</h1>
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Buscar por nombre, documento o habitación...">
+                        <button id="btn-search"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-options">
+                        <label>
+                            <input type="checkbox" id="filter-active" checked> Activos
+                        </label>
+                        <label>
+                            <input type="checkbox" id="filter-checkout"> Check-out
+                        </label>
+                        <label>
+                            <input type="checkbox" id="filter-all"> Todos
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Botón para agregar nuevo cliente -->
+                <div class="action-buttons">
+                    <button id="btn-add-client" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> Agregar Nuevo Cliente
+                    </button>
+                </div>
+
+                <div class="table-section">
+                    <div class="table-container">
+                        <table id="search-results">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Documento</th>
+                                    <th>Habitación</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Los resultados de búsqueda se cargarán aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Details Modal -->
+            <div id="client-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Detalles del Cliente</h2>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="client-details">
+                            <div class="detail-section">
+                                <h3>Información Personal</h3>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="label">Nombre:</span>
+                                        <span id="modal-nombre" class="value"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Documento:</span>
+                                        <span id="modal-documento" class="value"></span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="label">Teléfono:</span>
+                                        <span id="modal-telefono" class="value"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Email:</span>
+                                        <span id="modal-email" class="value"></span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="label">Nacionalidad:</span>
+                                        <span id="modal-nacionalidad" class="value"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Dirección:</span>
+                                        <span id="modal-direccion" class="value"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Información de Estancia</h3>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="label">Habitación:</span>
+                                        <span id="modal-habitacion" class="value"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Tipo:</span>
+                                        <span id="modal-tipo-habitacion" class="value"></span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="label">Check-in:</span>
+                                        <span id="modal-checkin" class="value"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Check-out:</span>
+                                        <span id="modal-checkout" class="value"></span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="label">Huéspedes:</span>
+                                        <span id="modal-huespedes" class="value"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Estado:</span>
+                                        <span id="modal-estado" class="value"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Consumos y Pagos</h3>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="label">Tarifa Diaria:</span>
+                                        <span id="modal-tarifa" class="value"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Total Estancia:</span>
+                                        <span id="modal-total" class="value"></span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="label">Pagado:</span>
+                                        <span id="modal-pagado" class="value"></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Pendiente:</span>
+                                        <span id="modal-pendiente" class="value"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Consumos</h3>
+                                <table id="modal-consumos">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Servicio</th>
+                                            <th>Monto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Los consumos se cargarán dinámicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-add-consumo" class="btn-secondary">Agregar Consumo</button>
+                        <button id="btn-checkout" class="btn-primary">Realizar Check-out</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Consumo Modal -->
+            <div id="consumo-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Agregar Consumo</h2>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="consumo-form">
+                            <div class="form-group">
+                                <label for="consumo-cliente">Cliente</label>
+                                <input type="text" id="consumo-cliente" readonly>
+                                <input type="hidden" id="consumo-cliente-id">
+                            </div>
+                            <div class="form-group">
+                                <label for="consumo-habitacion">Habitación</label>
+                                <input type="text" id="consumo-habitacion" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="consumo-servicio">Servicio</label>
+                                <select id="consumo-servicio" required>
+                                    <option value="">Seleccionar servicio</option>
+                                    <option value="Restaurante">Restaurante</option>
+                                    <option value="Bar">Bar</option>
+                                    <option value="Spa">Spa</option>
+                                    <option value="Lavandería">Lavandería</option>
+                                    <option value="Minibar">Minibar</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="consumo-descripcion">Descripción</label>
+                                <input type="text" id="consumo-descripcion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="consumo-monto">Monto</label>
+                                <input type="number" id="consumo-monto" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-cancelar-consumo" class="btn-secondary">Cancelar</button>
+                        <button id="btn-guardar-consumo" class="btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Modal -->
+            <div id="checkout-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Realizar Check-out</h2>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="checkout-summary">
+                            <div class="summary-section">
+                                <h3>Resumen de Estancia</h3>
+                                <div class="summary-row">
+                                    <div class="summary-item">
+                                        <span class="label">Cliente:</span>
+                                        <span id="checkout-cliente" class="value"></span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span class="label">Habitación:</span>
+                                        <span id="checkout-habitacion" class="value"></span>
+                                    </div>
+                                </div>
+                                <div class="summary-row">
+                                    <div class="summary-item">
+                                        <span class="label">Check-in:</span>
+                                        <span id="checkout-checkin" class="value"></span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span class="label">Check-out:</span>
+                                        <span id="checkout-checkout" class="value"></span>
+                                    </div>
+                                </div>
+                                <div class="summary-row">
+                                    <div class="summary-item">
+                                        <span class="label">Noches:</span>
+                                        <span id="checkout-noches" class="value"></span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span class="label">Tarifa:</span>
+                                        <span id="checkout-tarifa" class="value"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="summary-section">
+                                <h3>Detalle de Cargos</h3>
+                                <table id="checkout-cargos">
+                                    <thead>
+                                        <tr>
+                                            <th>Concepto</th>
+                                            <th>Monto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="cargo-habitacion">
+                                            <td>Habitación</td>
+                                            <td class="monto">$0.00</td>
+                                        </tr>
+                                        <!-- Los consumos se cargarán dinámicamente -->
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td id="checkout-total" class="monto"><strong>$0.00</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pagado</td>
+                                            <td id="checkout-pagado" class="monto">$0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Pendiente</strong></td>
+                                            <td id="checkout-pendiente" class="monto"><strong>$0.00</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <div class="summary-section">
+                                <h3>Método de Pago</h3>
+                                <div class="form-group">
+                                    <label for="checkout-metodo-pago">Método de Pago</label>
+                                    <select id="checkout-metodo-pago" required>
+                                        <option value="">Seleccionar método</option>
+                                        <option value="efectivo">Efectivo</option>
+                                        <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                        <option value="transferencia">Transferencia Bancaria</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="checkout-tarjeta-container" style="display: none;">
+                                    <label for="checkout-num-tarjeta">Número de Tarjeta</label>
+                                    <input type="text" id="checkout-num-tarjeta">
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkout-monto-pago">Monto a Pagar</label>
+                                    <input type="number" id="checkout-monto-pago" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-cancelar-checkout" class="btn-secondary">Cancelar</button>
+                        <button id="btn-completar-checkout" class="btn-primary">Completar Check-out</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Page -->
+            <div class="page" id="history" style="display: none;">
+                <h1>Historial de Estancias</h1>
+                <div class="filter-container">
+                    <div class="filter-group">
+                        <label for="history-fecha-desde">Desde:</label>
+                        <input type="date" id="history-fecha-desde">
+                    </div>
+                    <div class="filter-group">
+                        <label for="history-fecha-hasta">Hasta:</label>
+                        <input type="date" id="history-fecha-hasta">
+                    </div>
+                    <button id="btn-filtrar-historial" class="btn-primary">Filtrar</button>
+                </div>
+
+                <div class="table-section">
+                    <div class="table-container">
+                        <table id="historial-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Documento</th>
+                                    <th>Habitación</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                    <th>Noches</th>
+                                    <th>Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Los datos se cargarán dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div class="page" id="reports" style="display: none;">
+                <h1>Reportes</h1>
+                <div class="reports-container">
+                    <div class="report-card">
+                        <h2>Ocupación Mensual</h2>
+                        <div class="chart-container" id="ocupacion-mensual-chart">
+                            <!-- Aquí irá el gráfico -->
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h2>Ingresos por Tipo de Habitación</h2>
+                        <div class="chart-container" id="ingresos-habitacion-chart">
+                            <!-- Aquí irá el gráfico -->
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h2>Consumos por Categoría</h2>
+                        <div class="chart-container" id="consumos-categoria-chart">
+                            <!-- Aquí irá el gráfico -->
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h2>Estancia Promedio</h2>
+                        <div class="chart-container" id="estancia-promedio-chart">
+                            <!-- Aquí irá el gráfico -->
+                        </div>
+                    </div>
+                </div>
+                <div class="export-options">
+                    <button id="btn-exportar-excel" class="btn-secondary">
+                        <i class="fas fa-file-excel"></i> Exportar a Excel
+                    </button>
+                    <button id="btn-exportar-pdf" class="btn-secondary">
+                        <i class="fas fa-file-pdf"></i> Exportar a PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Edit Client Modal -->
+            <div id="edit-client-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="edit-client-title">Agregar Nuevo Cliente</h2>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-client-form">
+                            <input type="hidden" id="edit-client-id">
+                            <div class="form-section">
+                                <h3>Información Personal</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-nombre">Nombre Completo</label>
+                                        <input type="text" id="edit-nombre" name="edit-nombre" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-documento">Documento de Identidad</label>
+                                        <input type="text" id="edit-documento" name="edit-documento" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-telefono">Teléfono</label>
+                                        <input type="tel" id="edit-telefono" name="edit-telefono" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-email">Correo Electrónico</label>
+                                        <input type="email" id="edit-email" name="edit-email" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-nacionalidad">Nacionalidad</label>
+                                        <input type="text" id="edit-nacionalidad" name="edit-nacionalidad" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-direccion">Dirección</label>
+                                        <input type="text" id="edit-direccion" name="edit-direccion" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="edit-estancia-section" class="form-section">
+                                <h3>Información de Estancia</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-habitacion">Habitación</label>
+                                        <select id="edit-habitacion" name="edit-habitacion">
+                                            <option value="">Sin asignar</option>
+                                            <!-- Las habitaciones se cargarán dinámicamente -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-estado">Estado</label>
+                                        <   select id="edit-estado" name="edit-estado">
+                                            <option value="Registrado">Registrado</option>
+                                            <option value="Activo">Activo</option>
+                                            <option value="Checkout">Checkout</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="edit-fechas-container" class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-fecha-checkin">Fecha Check-in</label>
+                                        <input type="date" id="edit-fecha-checkin" name="edit-fecha-checkin">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-fecha-checkout">Fecha Check-out</label>
+                                        <input type="date" id="edit-fecha-checkout" name="edit-fecha-checkout">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-cancelar-edit-client" class="btn-secondary">Cancelar</button>
+                        <button id="btn-guardar-edit-client" class="btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="clientes.js"></script>
+</body>
+</html>

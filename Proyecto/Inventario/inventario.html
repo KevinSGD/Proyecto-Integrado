@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Hotelera - Inventario</title>
+    <link rel="stylesheet" href="inventario.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Menú lateral -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Hotel</h1>
+                <div class="module-badge">Inventario</div>
+            </div>
+            <div class="sidebar-user">
+                <div class="user-avatar">A</div>
+                <div class="user-info">
+                    <p class="user-name">Admins</p>
+                    <p class="user-role">Administrador</p>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-section="dashboard">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item" data-section="agregar-producto">
+                        <span class="material-symbols-outlined">add_box</span>
+                        <span>Agregar Producto</span>
+                    </li>
+                    <li class="nav-item" data-section="movimientos">
+                        <span class="material-symbols-outlined">swap_horiz</span>
+                        <span>Entradas/Salidas</span>
+                    </li>
+                    <li class="nav-item" data-section="existencias">
+                        <span class="material-symbols-outlined">category</span>
+                        <span>Existencias</span>
+                    </li>
+                    <li class="nav-item" data-section="reportes">
+                        <span class="material-symbols-outlined">summarize</span>
+                        <span>Reportes</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="logout-btn" onclick="cerrarSesion()">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Cerrar Sesión</span>
+                </button>
+                <p id="current-date"></p>
+                <p>&copy; 2025 Hotel Manager</p>
+            </div>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Dashboard de Inventario -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2>Dashboard de Inventario</h2>
+                </div>
+                
+                <!-- Estadísticas de inventario -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">inventory</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Productos</h3>
+                            <p class="stat-value" id="total-productos">0</p>
+                            <p class="stat-label">En inventario</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">warning</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Stock Bajo</h3>
+                            <p class="stat-value" id="stock-bajo">0</p>
+                            <p class="stat-label">Productos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">trending_up</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Entradas</h3>
+                            <p class="stat-value" id="total-entradas">0</p>
+                            <p class="stat-label">Este mes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">trending_down</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Salidas</h3>
+                            <p class="stat-value" id="total-salidas">0</p>
+                            <p class="stat-label">Este mes</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alertas de stock bajo -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Alertas de Stock Bajo</h3>
+                        <button class="btn-text" onclick="verTodasAlertas()">Ver todas</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-alertas">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Categoría</th>
+                                    <th>Stock Actual</th>
+                                    <th>Stock Mínimo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Movimientos recientes -->
+                <div class="dashboard-recent">
+                    <div class="recent-movements">
+                        <div class="card-header">
+                            <h3>Movimientos Recientes</h3>
+                            <button class="btn-text" onclick="verTodosMovimientos()">Ver todos</button>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Tipo</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Origen</th>
+                                        <th>Usuario</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-movements-table">
+                                    <!-- Se llenará dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="inventory-summary">
+                        <div class="card-header">
+                            <h3>Resumen por Categoría</h3>
+                        </div>
+                        <div class="category-chart">
+                            <canvas id="category-chart"></canvas>
+                        </div>
+                        <div class="category-list" id="category-summary">
+                            <!-- Se llenará dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Agregar Producto -->
+            <section id="agregar-producto" class="content-section">
+                <div class="section-header">
+                    <h2>Agregar Producto al Inventario</h2>
+                </div>
+                <div class="content-card">
+                    <form id="producto-form">
+                        <div class="form-columns">
+                            <div class="form-column">
+                                <h3>Información del Producto</h3>
+                                <div class="form-group">
+                                    <label for="producto-nombre">Nombre del Producto:</label>
+                                    <input type="text" id="producto-nombre" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="producto-categoria">Categoría:</label>
+                                    <select id="producto-categoria" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="minibar">Minibar</option>
+                                        <option value="restaurante">Restaurante</option>
+                                        <option value="lavanderia">Lavandería</option>
+                                        <option value="spa">Spa</option>
+                                        <option value="limpieza">Limpieza</option>
+                                        <option value="mantenimiento">Mantenimiento</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="producto-descripcion">Descripción:</label>
+                                    <textarea id="producto-descripcion" rows="3"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="form-column">
+                                <h3>Detalles de Inventario</h3>
+                                <div class="form-group">
+                                    <label for="producto-sku">SKU/Código:</label>
+                                    <input type="text" id="producto-sku" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="producto-precio">Precio Unitario:</label>
+                                        <input type="number" id="producto-precio" min="0" step="0.01" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="producto-unidad">Unidad de Medida:</label>
+                                        <select id="producto-unidad" required>
+                                            <option value="unidad">Unidad</option>
+                                            <option value="kg">Kilogramo</option>
+                                            <option value="lt">Litro</option>
+                                            <option value="caja">Caja</option>
+                                            <option value="paquete">Paquete</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="producto-stock">Stock Inicial:</label>
+                                        <input type="number" id="producto-stock" min="0" value="0" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="producto-minimo">Stock Mínimo:</label>
+                                        <input type="number" id="producto-minimo" min="0" value="5" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="producto-ubicacion">Ubicación:</label>
+                                    <input type="text" id="producto-ubicacion" placeholder="Ej: Almacén principal, Estante 3">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="limpiarFormulario('producto-form')">Cancelar</button>
+                            <button type="button" class="btn-primary" onclick="guardarProducto()">Guardar Producto</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Sección Entradas/Salidas -->
+            <section id="movimientos" class="content-section">
+                <div class="section-header">
+                    <h2>Registrar Entrada/Salida de Productos</h2>
+                </div>
+                <div class="content-card">
+                    <form id="movimiento-form">
+                        <div class="form-columns">
+                            <div class="form-column">
+                                <h3>Detalles del Movimiento</h3>
+                                <div class="form-group">
+                                    <label for="movimiento-tipo">Tipo de Movimiento:</label>
+                                    <select id="movimiento-tipo" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="entrada">Entrada</option>
+                                        <option value="salida">Salida</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="movimiento-fecha">Fecha:</label>
+                                    <input type="date" id="movimiento-fecha" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="movimiento-motivo">Motivo:</label>
+                                    <select id="movimiento-motivo" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="compra">Compra</option>
+                                        <option value="venta">Venta</option>
+                                        <option value="devolucion">Devolución</option>
+                                        <option value="ajuste">Ajuste de inventario</option>
+                                        <option value="consumo">Consumo interno</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="movimiento-referencia">Referencia/Documento:</label>
+                                    <input type="text" id="movimiento-referencia" placeholder="Ej: Factura #123, Orden #456">
+                                </div>
+                            </div>
+                            
+                            <div class="form-column">
+                                <h3>Producto</h3>
+                                <div class="form-group">
+                                    <label for="movimiento-producto">Buscar Producto:</label>
+                                    <div class="search-container">
+                                        <input type="text" id="movimiento-producto-buscar" placeholder="Nombre o SKU del producto">
+                                        <button type="button" class="btn-primary" onclick="buscarProductoMovimiento()">Buscar</button>
+                                    </div>
+                                </div>
+                                
+                                <div id="producto-info" class="hidden">
+                                    <div class="info-card">
+                                        <h4>Información del Producto</h4>
+                                        <div class="info-grid">
+                                            <div class="info-item">
+                                                <span class="info-label">Producto:</span>
+                                                <span id="info-producto-nombre" class="info-value"></span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">SKU:</span>
+                                                <span id="info-producto-sku" class="info-value"></span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">Stock Actual:</span>
+                                                <span id="info-producto-stock" class="info-value"></span>
+                                            </div>
+                                            <input type="hidden" id="movimiento-producto-id">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="movimiento-cantidad">Cantidad:</label>
+                                        <input type="number" id="movimiento-cantidad" min="1" value="1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="movimiento-notas">Notas:</label>
+                                        <textarea id="movimiento-notas" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="limpiarFormulario('movimiento-form')">Cancelar</button>
+                            <button type="button" class="btn-primary" id="guardar-movimiento-btn" onclick="guardarMovimiento()" disabled>Registrar Movimiento</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Historial de movimientos -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Historial de Movimientos</h3>
+                        <div class="filter-actions">
+                            <select id="filtro-movimiento-tipo" onchange="filtrarMovimientos()">
+                                <option value="todos">Todos</option>
+                                <option value="entrada">Entradas</option>
+                                <option value="salida">Salidas</option>
+                            </select>
+                            <select id="filtro-movimiento-origen" onchange="filtrarMovimientos()">
+                                <option value="todos">Todos los orígenes</option>
+                                <option value="inventario">Inventario</option>
+                                <option value="ventas">Ventas</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-movimientos">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Motivo</th>
+                                    <th>Referencia</th>
+                                    <th>Origen</th>
+                                    <th>Usuario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Existencias -->
+            <section id="existencias" class="content-section">
+                <div class="section-header">
+                    <h2>Existencias por Categoría</h2>
+                </div>
+                <div class="content-card">
+                    <div class="filters">
+                        <div class="filter-group">
+                            <div class="form-group">
+                                <label for="filtro-categoria">Categoría:</label>
+                                <select id="filtro-categoria" onchange="filtrarExistencias()">
+                                    <option value="todas">Todas</option>
+                                    <option value="minibar">Minibar</option>
+                                    <option value="restaurante">Restaurante</option>
+                                    <option value="lavanderia">Lavandería</option>
+                                    <option value="spa">Spa</option>
+                                    <option value="limpieza">Limpieza</option>
+                                    <option value="mantenimiento">Mantenimiento</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="filtro-stock">Estado:</label>
+                                <select id="filtro-stock" onchange="filtrarExistencias()">
+                                    <option value="todos">Todos</option>
+                                    <option value="bajo">Stock Bajo</option>
+                                    <option value="normal">Stock Normal</option>
+                                    <option value="agotado">Agotado</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="buscar-producto">Buscar:</label>
+                                <input type="text" id="buscar-producto" placeholder="Nombre o SKU" onkeyup="filtrarExistencias()">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="tabla-existencias">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Producto</th>
+                                    <th>Categoría</th>
+                                    <th>Stock</th>
+                                    <th>Unidad</th>
+                                    <th>Precio Unit.</th>
+                                    <th>Valor Total</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Reportes -->
+            <section id="reportes" class="content-section">
+                <div class="section-header">
+                    <h2>Reportes de Inventario</h2>
+                </div>
+                <div class="reports-grid">
+                    <div class="report-card" onclick="generarReporteStock()">
+                        <div class="report-icon">
+                            <span class="material-symbols-outlined">inventory</span>
+                        </div>
+                        <div class="report-info">
+                            <h3>Reporte de Stock</h3>
+                            <p>Genera un informe detallado del inventario actual</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card" onclick="generarReporteMovimientos()">
+                        <div class="report-icon">
+                            <span class="material-symbols-outlined">swap_horiz</span>
+                        </div>
+                        <div class="report-info">
+                            <h3>Movimientos</h3>
+                            <p>Historial de entradas y salidas de productos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card" onclick="generarReporteValoracion()">
+                        <div class="report-icon">
+                            <span class="material-symbols-outlined">payments</span>
+                        </div>
+                        <div class="report-info">
+                            <h3>Valoración de Inventario</h3>
+                            <p>Valor económico del inventario actual</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card" onclick="generarReporteRotacion()">
+                        <div class="report-icon">
+                            <span class="material-symbols-outlined">update</span>
+                        </div>
+                        <div class="report-info">
+                            <h3>Rotación de Productos</h3>
+                            <p>Análisis de la frecuencia de uso de productos</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-card hidden" id="reporte-generado">
+                    <div class="card-header">
+                        <h3 id="reporte-titulo">Reporte</h3>
+                        <div class="export-actions">
+                            <button type="button" class="btn-secondary" onclick="imprimirReporte()">
+                                <span class="material-symbols-outlined">print</span> Imprimir
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="reporte-contenido">
+                        <!-- El contenido del reporte se generará dinámicamente -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modales -->
+    <div id="editar-producto-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Producto</h3>
+                <span class="close" onclick="cerrarModal('editar-producto-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editar-producto-form">
+                    <input type="hidden" id="editar-producto-id">
+                    <div class="form-columns">
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="editar-producto-nombre">Nombre del Producto:</label>
+                                <input type="text" id="editar-producto-nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editar-producto-categoria">Categoría:</label>
+                                <select id="editar-producto-categoria" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="minibar">Minibar</option>
+                                    <option value="restaurante">Restaurante</option>
+                                    <option value="lavanderia">Lavandería</option>
+                                    <option value="spa">Spa</option>
+                                    <option value="limpieza">Limpieza</option>
+                                    <option value="mantenimiento">Mantenimiento</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editar-producto-sku">SKU/Código:</label>
+                                <input type="text" id="editar-producto-sku" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editar-producto-descripcion">Descripción:</label>
+                                <textarea id="editar-producto-descripcion" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-column">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="editar-producto-precio">Precio Unitario:</label>
+                                    <input type="number" id="editar-producto-precio" min="0" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editar-producto-unidad">Unidad de Medida:</label>
+                                    <select id="editar-producto-unidad" required>
+                                        <option value="unidad">Unidad</option>
+                                        <option value="kg">Kilogramo</option>
+                                        <option value="lt">Litro</option>
+                                        <option value="caja">Caja</option>
+                                        <option value="paquete">Paquete</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="editar-producto-stock">Stock Actual:</label>
+                                    <input type="number" id="editar-producto-stock" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editar-producto-minimo">Stock Mínimo:</label>
+                                    <input type="number" id="editar-producto-minimo" min="0" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editar-producto-ubicacion">Ubicación:</label>
+                                <input type="text" id="editar-producto-ubicacion">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="cerrarModal('editar-producto-modal')">Cancelar</button>
+                        <button type="button" class="btn-primary" onclick="actualizarProducto()">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="ver-movimientos-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Historial de Movimientos del Producto</h3>
+                <span class="close" onclick="cerrarModal('ver-movimientos-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="info-card" id="producto-movimiento-info">
+                    <h4>Información del Producto</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Producto:</span>
+                            <span id="movimiento-info-nombre" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">SKU:</span>
+                            <span id="movimiento-info-sku" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Stock Actual:</span>
+                            <span id="movimiento-info-stock" class="info-value"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="tabla-producto-movimientos">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Cantidad</th>
+                                <th>Motivo</th>
+                                <th>Referencia</th>
+                                <th>Origen</th>
+                                <th>Usuario</th>
+                                <th>Notas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Se llenará dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="inventario.js"></script>
+</body>
+</html>

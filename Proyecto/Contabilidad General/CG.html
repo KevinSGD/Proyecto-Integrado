@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Hotelera - Contabilidad</title>
+    <link rel="stylesheet" href="contabilidad.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Menú lateral -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Hotel </h1>
+                <div class="module-badge">Contabilidad</div>
+            </div>
+            <div class="sidebar-user">
+                <div class="user-avatar">B</div>
+                <div class="user-info">
+                    <p class="user-name">Admin</p>
+                    <p class="user-role">Administrador</p>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-section="dashboard">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item" data-section="ingresos">
+                        <span class="material-symbols-outlined">payments</span>
+                        <span>Ingresos</span>
+                    </li>
+                    <li class="nav-item" data-section="egresos">
+                        <span class="material-symbols-outlined">account_balance_wallet</span>
+                        <span>Egresos</span>
+                    </li>
+                    <li class="nav-item" data-section="reportes">
+                        <span class="material-symbols-outlined">summarize</span>
+                        <span>Reportes</span>
+                    </li>
+                    <li class="nav-item" data-section="historial">
+                        <span class="material-symbols-outlined">history</span>
+                        <span>Historial</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="logout-btn" onclick="cerrarSesion()">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Cerrar Sesión</span>
+                </button>
+                <p id="current-date"></p>
+                <p>&copy; 2025 Hotel Manager</p>
+            </div>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Dashboard de Contabilidad -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2>Dashboard de Contabilidad</h2>
+                    <div class="period-selector">
+                        <label for="periodo-dashboard">Periodo:</label>
+                        <select id="periodo-dashboard" onchange="actualizarDashboard()">
+                            <option value="mes">Este Mes</option>
+                            <option value="trimestre">Este Trimestre</option>
+                            <option value="anio">Este Año</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Estadísticas financieras -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">trending_up</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Ingresos Totales</h3>
+                            <p class="stat-value" id="total-ingresos">$0.00</p>
+                            <p class="stat-label">En el periodo</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">trending_down</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Egresos Totales</h3>
+                            <p class="stat-value" id="total-egresos">$0.00</p>
+                            <p class="stat-label">En el periodo</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">balance</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Balance</h3>
+                            <p class="stat-value" id="balance-total">$0.00</p>
+                            <p class="stat-label">En el periodo</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">savings</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Saldo Actual</h3>
+                            <p class="stat-value" id="saldo-actual">$0.00</p>
+                            <p class="stat-label">Disponible</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gráficos financieros -->
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <div class="card-header">
+                            <h3>Ingresos vs Egresos</h3>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="ingresos-egresos-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="card-header">
+                            <h3>Distribución de Egresos</h3>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="egresos-categoria-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Transacciones recientes -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Transacciones Recientes</h3>
+                        <button class="btn-text" onclick="verTodasTransacciones()">Ver todas</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-transacciones-recientes">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Categoría</th>
+                                    <th>Descripción</th>
+                                    <th>Monto</th>
+                                    <th>Origen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Ingresos -->
+            <section id="ingresos" class="content-section">
+                <div class="section-header">
+                    <h2>Registro de Ingresos</h2>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Nuevo Ingreso</h3>
+                    </div>
+                    <form id="ingreso-form">
+                        <div class="form-columns">
+                            <div class="form-column">
+                                <div class="form-group">
+                                    <label for="ingreso-fecha">Fecha:</label>
+                                    <input type="date" id="ingreso-fecha" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ingreso-categoria">Categoría:</label>
+                                    <select id="ingreso-categoria" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="hospedaje">Hospedaje</option>
+                                        <option value="restaurante">Restaurante</option>
+                                        <option value="spa">Spa</option>
+                                        <option value="eventos">Eventos</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ingreso-metodo">Método de Pago:</label>
+                                    <select id="ingreso-metodo" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="efectivo">Efectivo</option>
+                                        <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                        <option value="transferencia">Transferencia Bancaria</option>
+                                        <option value="cheque">Cheque</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-column">
+                                <div class="form-group">
+                                    <label for="ingreso-descripcion">Descripción:</label>
+                                    <textarea id="ingreso-descripcion" rows="2" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ingreso-monto">Monto ($):</label>
+                                    <input type="number" id="ingreso-monto" min="0.01" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ingreso-referencia">Referencia/Comprobante:</label>
+                                    <input type="text" id="ingreso-referencia" placeholder="Ej: Factura #123, Recibo #456">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="limpiarFormulario('ingreso-form')">Cancelar</button>
+                            <button type="button" class="btn-primary" onclick="guardarIngreso()">Registrar Ingreso</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Ingresos Pendientes de Ventas</h3>
+                        <button class="btn-primary" onclick="sincronizarIngresosVentas()">
+                            <span class="material-symbols-outlined">sync</span> Sincronizar
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-ingresos-pendientes">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Cliente</th>
+                                    <th>Descripción</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Historial de Ingresos</h3>
+                        <div class="filter-actions">
+                            <div class="date-range">
+                                <input type="date" id="ingreso-fecha-inicio" placeholder="Fecha inicio">
+                                <span>a</span>
+                                <input type="date" id="ingreso-fecha-fin" placeholder="Fecha fin">
+                                <button class="btn-secondary" onclick="filtrarIngresos()">Filtrar</button>
+                            </div>
+                            <button class="btn-secondary" onclick="exportarIngresos()">
+                                <span class="material-symbols-outlined">download</span> Exportar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-ingresos">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Categoría</th>
+                                    <th>Descripción</th>
+                                    <th>Método de Pago</th>
+                                    <th>Referencia</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Egresos -->
+            <section id="egresos" class="content-section">
+                <div class="section-header">
+                    <h2>Registro de Egresos</h2>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Nuevo Egreso</h3>
+                    </div>
+                    <form id="egreso-form">
+                        <div class="form-columns">
+                            <div class="form-column">
+                                <div class="form-group">
+                                    <label for="egreso-fecha">Fecha:</label>
+                                    <input type="date" id="egreso-fecha" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="egreso-categoria">Categoría:</label>
+                                    <select id="egreso-categoria" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="sueldos">Sueldos y Salarios</option>
+                                        <option value="compras">Compras de Inventario</option>
+                                        <option value="servicios">Servicios Básicos</option>
+                                        <option value="mantenimiento">Mantenimiento</option>
+                                        <option value="impuestos">Impuestos</option>
+                                        <option value="alquiler">Alquiler/Hipoteca</option>
+                                        <option value="marketing">Marketing y Publicidad</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="egreso-metodo">Método de Pago:</label>
+                                    <select id="egreso-metodo" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="efectivo">Efectivo</option>
+                                        <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                        <option value="transferencia">Transferencia Bancaria</option>
+                                        <option value="cheque">Cheque</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-column">
+                                <div class="form-group">
+                                    <label for="egreso-descripcion">Descripción:</label>
+                                    <textarea id="egreso-descripcion" rows="2" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="egreso-monto">Monto ($):</label>
+                                    <input type="number" id="egreso-monto" min="0.01" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="egreso-referencia">Referencia/Comprobante:</label>
+                                    <input type="text" id="egreso-referencia" placeholder="Ej: Factura #123, Recibo #456">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="limpiarFormulario('egreso-form')">Cancelar</button>
+                            <button type="button" class="btn-primary" onclick="guardarEgreso()">Registrar Egreso</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Egresos Pendientes de Inventario</h3>
+                        <button class="btn-primary" onclick="sincronizarEgresosInventario()">
+                            <span class="material-symbols-outlined">sync</span> Sincronizar
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-egresos-pendientes">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Proveedor</th>
+                                    <th>Descripción</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Historial de Egresos</h3>
+                        <div class="filter-actions">
+                            <div class="date-range">
+                                <input type="date" id="egreso-fecha-inicio" placeholder="Fecha inicio">
+                                <span>a</span>
+                                <input type="date" id="egreso-fecha-fin" placeholder="Fecha fin">
+                                <button class="btn-secondary" onclick="filtrarEgresos()">Filtrar</button>
+                            </div>
+                            <button class="btn-secondary" onclick="exportarEgresos()">
+                                <span class="material-symbols-outlined">download</span> Exportar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-egresos">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Categoría</th>
+                                    <th>Descripción</th>
+                                    <th>Método de Pago</th>
+                                    <th>Referencia</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Reportes -->
+            <section id="reportes" class="content-section">
+                <div class="section-header">
+                    <h2>Reportes Contables</h2>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Generar Reporte</h3>
+                    </div>
+                    <div class="report-generator">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reporte-tipo">Tipo de Reporte:</label>
+                                <select id="reporte-tipo" required>
+                                    <option value="balance">Balance General</option>
+                                    <option value="resultados">Estado de Resultados</option>
+                                    <option value="flujo">Flujo de Efectivo</option>
+                                    <option value="categorias">Gastos por Categoría</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reporte-periodo">Periodo:</label>
+                                <select id="reporte-periodo" required>
+                                    <option value="diario">Diario</option>
+                                    <option value="semanal">Semanal</option>
+                                    <option value="mensual" selected>Mensual</option>
+                                    <option value="trimestral">Trimestral</option>
+                                    <option value="anual">Anual</option>
+                                    <option value="personalizado">Personalizado</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="periodo-personalizado" class="form-row hidden">
+                            <div class="form-group">
+                                <label for="reporte-fecha-inicio">Fecha Inicio:</label>
+                                <input type="date" id="reporte-fecha-inicio">
+                            </div>
+                            <div class="form-group">
+                                <label for="reporte-fecha-fin">Fecha Fin:</label>
+                                <input type="date" id="reporte-fecha-fin">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-primary" onclick="generarReporte()">
+                                <span class="material-symbols-outlined">description</span> Generar Reporte
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-card hidden" id="reporte-generado">
+                    <div class="card-header">
+                        <h3 id="reporte-titulo">Reporte</h3>
+                        <div class="export-actions">
+                            <button type="button" class="btn-secondary" onclick="imprimirReporte()">
+                                <span class="material-symbols-outlined">print</span> Imprimir
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="exportarReporteExcel()">
+                                <span class="material-symbols-outlined">download</span> Excel
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="exportarReportePDF()">
+                                <span class="material-symbols-outlined">picture_as_pdf</span> PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="reporte-contenido">
+                        <!-- El contenido del reporte se generará dinámicamente -->
+                    </div>
+                </div>
+                
+                <div class="reports-grid">
+                    <div class="report-card" onclick="generarReporteRapido('balance')">
+                        <div class="report-icon">
+                            <span class="material-symbols-outlined">balance</span>
+                        </div>
+                        <div class="report-info">
+                            <h3>Balance General</h3>
+                            <p>Resumen de activos, pasivos y patrimonio</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card" onclick="generarReporteRapido('resultados')">
+                        <div class="report-icon">
+                            <span class="material-symbols-outlined">trending_up</span>
+                        </div>
+                        <div class="report-info">
+                            <h3>Estado de Resultados</h3>
+                            <p>Ingresos, gastos y utilidades del periodo</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card" onclick="generarReporteRapido('flujo')">
+                        <div class="report-icon">
+                            <span class="material-symbols-outlined">account_balance</span>
+                        </div>
+                        <div class="report-info">
+                            <h3>Flujo de Efectivo</h3>
+                            <p>Movimientos de entrada y salida de dinero</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card" onclick="generarReporteRapido('categorias')">
+                        <div class="report-icon">
+                            <span class="material-symbols-outlined">pie_chart</span>
+                        </div>
+                        <div class="report-info">
+                            <h3>Gastos por Categoría</h3>
+                            <p>Análisis detallado de gastos por categoría</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Historial -->
+            <section id="historial" class="content-section">
+                <div class="section-header">
+                    <h2>Historial de Movimientos</h2>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Actualizar</h3>
+                    </div>
+                    <div class="filters">
+                        <div class="filter-group">
+                            <div class="form-group">
+                                <label for="historial-tipo">Tipo:</label>
+                                <select id="historial-tipo" onchange="filtrarHistorial()">
+                                    <option value="todos">Todos</option>
+                                    <option value="ingreso">Ingresos</option>
+                                    <option value="egreso">Egresos</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="historial-categoria">Categoría:</label>
+                                <select id="historial-categoria" onchange="filtrarHistorial()">
+                                    <option value="todas">Todas</option>
+                                    <optgroup label="Ingresos">
+                                        <option value="hospedaje">Hospedaje</option>
+                                        <option value="restaurante">Restaurante</option>
+                                        <option value="spa">Spa</option>
+                                        <option value="eventos">Eventos</option>
+                                        <option value="otros-ingresos">Otros Ingresos</option>
+                                    </optgroup>
+                                    <optgroup label="Egresos">
+                                        <option value="sueldos">Sueldos y Salarios</option>
+                                        <option value="compras">Compras de Inventario</option>
+                                        <option value="servicios">Servicios Básicos</option>
+                                        <option value="mantenimiento">Mantenimiento</option>
+                                        <option value="impuestos">Impuestos</option>
+                                        <option value="alquiler">Alquiler/Hipoteca</option>
+                                        <option value="marketing">Marketing y Publicidad</option>
+                                        <option value="otros-egresos">Otros Egresos</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="historial-fecha-inicio">Desde:</label>
+                                <input type="date" id="historial-fecha-inicio" onchange="filtrarHistorial()">
+                            </div>
+                            <div class="form-group">
+                                <label for="historial-fecha-fin">Hasta:</label>
+                                <input type="date" id="historial-fecha-fin" onchange="filtrarHistorial()">
+                            </div>
+                            <div class="form-group">
+                                <label for="historial-buscar">Buscar:</label>
+                                <input type="text" id="historial-buscar" placeholder="Descripción o referencia" onkeyup="filtrarHistorial()">
+                            </div>
+                        </div>
+                        <div class="export-actions">
+                            <button type="button" class="btn-secondary" onclick="exportarHistorial()">
+                                <span class="material-symbols-outlined">download</span> Exportar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-card">
+                    <div class="table-container">
+                        <table id="tabla-historial">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Categoría</th>
+                                    <th>Descripción</th>
+                                    <th>Método de Pago</th>
+                                    <th>Referencia</th>
+                                    <th>Monto</th>
+                                    <th>Origen</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Resumen Financiero</h3>
+                    </div>
+                    <div class="summary-stats">
+                        <div class="summary-item">
+                            <span class="summary-label">Total Ingresos:</span>
+                            <span class="summary-value" id="historial-total-ingresos">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Total Egresos:</span>
+                            <span class="summary-value" id="historial-total-egresos">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Balance:</span>
+                            <span class="summary-value" id="historial-balance">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modales -->
+    <div id="ver-transaccion-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalles de la Transacción</h3>
+                <span class="close" onclick="cerrarModal('ver-transaccion-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="info-card">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Fecha:</span>
+                            <span id="detalle-fecha" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tipo:</span>
+                            <span id="detalle-tipo" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Categoría:</span>
+                            <span id="detalle-categoria" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Monto:</span>
+                            <span id="detalle-monto" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Método de Pago:</span>
+                            <span id="detalle-metodo" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Referencia:</span>
+                            <span id="detalle-referencia" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Origen:</span>
+                            <span id="detalle-origen" class="info-value"></span>
+                        </div>
+                        <div class="info-item full-width">
+                            <span class="info-label">Descripción:</span>
+                            <span id="detalle-descripcion" class="info-value"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="cerrarModal('ver-transaccion-modal')">Cerrar</button>
+                    <button type="button" class="btn-primary" onclick="editarTransaccion()">Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editar-transaccion-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Transacción</h3>
+                <span class="close" onclick="cerrarModal('editar-transaccion-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editar-transaccion-form">
+                    <input type="hidden" id="editar-transaccion-id">
+                    <input type="hidden" id="editar-transaccion-tipo">
+                    
+                    <div class="form-columns">
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="editar-fecha">Fecha:</label>
+                                <input type="date" id="editar-fecha" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editar-categoria">Categoría:</label>
+                                <select id="editar-categoria" required>
+                                    <!-- Se llenará dinámicamente según el tipo -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editar-metodo">Método de Pago:</label>
+                                <select id="editar-metodo" required>
+                                    <option value="efectivo">Efectivo</option>
+                                    <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                    <option value="transferencia">Transferencia Bancaria</option>
+                                    <option value="cheque">Cheque</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="editar-descripcion">Descripción:</label>
+                                <textarea id="editar-descripcion" rows="2" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="editar-monto">Monto ($):</label>
+                                <input type="number" id="editar-monto" min="0.01" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editar-referencia">Referencia/Comprobante:</label>
+                                <input type="text" id="editar-referencia">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="cerrarModal('editar-transaccion-modal')">Cancelar</button>
+                        <button type="button" class="btn-primary" onclick="guardarEdicionTransaccion()">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    
+    <script src="contabilidad.js"></script>
+</body>
+</html>

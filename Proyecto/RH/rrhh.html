@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Hotelera - Recursos Humanos</title>
+    <link rel="stylesheet" href="rrhh.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Menú lateral -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Hotel</h1>
+            </div>
+            <div class="sidebar-user">
+                <div class="user-avatar">A</div>
+                <div class="user-info">
+                    <p class="user-name">Admin</p>
+                    <p class="user-role">Administrador</p>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-section="dashboard">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item" data-section="empleados">
+                        <span class="material-symbols-outlined">group</span>
+                        <span>Empleados</span>
+                    </li>
+                    <li class="nav-item" data-section="asistencias">
+                        <span class="material-symbols-outlined">fact_check</span>
+                        <span>Asistencias</span>
+                    </li>
+                    <li class="nav-item" data-section="nomina">
+                        <span class="material-symbols-outlined">payments</span>
+                        <span>Nómina</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="logout-btn" onclick="cerrarSesion()">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Cerrar Sesión</span>
+                </button>
+                <p id="current-date"></p>
+                <p>&copy; 2025 Hotel Manager</p>
+            </div>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Dashboard de Recursos Humanos -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2>Dashboard de Recursos Humanos</h2>
+                </div>
+                
+                <!-- Estadísticas de personal -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">group</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Empleados</h3>
+                            <p class="stat-value" id="total-empleados">0</p>
+                            <p class="stat-label">Activos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">today</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Asistencia Hoy</h3>
+                            <p class="stat-value" id="asistencia-hoy">0%</p>
+                            <p class="stat-label">Empleados presentes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">payments</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Nómina Mensual</h3>
+                            <p class="stat-value" id="nomina-mensual">$0.00</p>
+                            <p class="stat-label">Estimada</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">event_busy</span>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Ausencias</h3>
+                            <p class="stat-value" id="total-ausencias">0</p>
+                            <p class="stat-label">Este mes</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Empleados recientes -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Empleados Recientes</h3>
+                        <button class="btn-text" onclick="verTodosEmpleados()">Ver todos</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-empleados-recientes">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Departamento</th>
+                                    <th>Puesto</th>
+                                    <th>Fecha de Ingreso</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Empleados -->
+            <section id="empleados" class="content-section">
+                <div class="section-header">
+                    <h2>Gestión de Empleados</h2>
+                    <button class="btn-primary" onclick="abrirModalNuevoEmpleado()">
+                        <span class="material-symbols-outlined">person_add</span> Nuevo Empleado
+                    </button>
+                </div>
+                
+                <div class="content-card">
+                    <div class="filters">
+                        <div class="filter-group">
+                            <div class="form-group">
+                                <label for="filtro-departamento">Departamento:</label>
+                                <select id="filtro-departamento" onchange="filtrarEmpleados()">
+                                    <option value="todos">Todos</option>
+                                    <option value="recepcion">Recepción</option>
+                                    <option value="housekeeping">Housekeeping</option>
+                                    <option value="restaurante">Restaurante</option>
+                                    <option value="mantenimiento">Mantenimiento</option>
+                                    <option value="administracion">Administración</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="filtro-estado">Estado:</label>
+                                <select id="filtro-estado" onchange="filtrarEmpleados()">
+                                    <option value="todos">Todos</option>
+                                    <option value="activo">Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                    <option value="vacaciones">Vacaciones</option>
+                                    <option value="permiso">Permiso</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="buscar-empleado">Buscar:</label>
+                                <input type="text" id="buscar-empleado" placeholder="Nombre o ID" onkeyup="filtrarEmpleados()">
+                            </div>
+                        </div>
+                       
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="tabla-empleados">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Departamento</th>
+                                    <th>Puesto</th>
+                                    <th>Contacto</th>
+                                    <th>Fecha Ingreso</th>
+                                    <th>Sueldo Base</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Asistencias -->
+            <section id="asistencias" class="content-section">
+                <div class="section-header">
+                    <h2>Control de Asistencias</h2>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Registro de Asistencia</h3>
+                        <div class="date-selector">
+                            <label for="fecha-asistencia">Fecha:</label>
+                            <input type="date" id="fecha-asistencia" onchange="cargarAsistenciasPorFecha()">
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="tabla-registro-asistencia">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Departamento</th>
+                                    <th>Entrada</th>
+                                    <th>Salida</th>
+                                    <th>Estado</th>
+                                    <th>Observaciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Nómina -->
+            <section id="nomina" class="content-section">
+                <div class="section-header">
+                    <h2>Cálculo de Nómina</h2>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Generar Nómina</h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nomina-periodo">Periodo:</label>
+                            <select id="nomina-periodo" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="quincenal-1">Primera Quincena</option>
+                                <option value="quincenal-2">Segunda Quincena</option>
+                                <option value="mensual">Mensual</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nomina-mes">Mes:</label>
+                            <select id="nomina-mes" required>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nomina-ano">Año:</label>
+                            <select id="nomina-ano" required>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <button type="button" class="btn-primary" onclick="calcularNomina()">
+                                <span class="material-symbols-outlined">calculate</span> Calcular
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="resultado-nomina" class="content-card hidden">
+                    <div class="card-header">
+                        <h3 id="titulo-nomina">Nómina</h3>
+                        <div class="export-actions">
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-nomina">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Empleado</th>
+                                    <th>Departamento</th>
+                                    <th>Sueldo Base</th>
+                                    <th>Días Trabajados</th>
+                                    <th>Bonos</th>
+                                    <th>Deducciones</th>
+                                    <th>Total</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3"><strong>Totales</strong></td>
+                                    <td id="total-sueldos">$0.00</td>
+                                    <td></td>
+                                    <td id="total-bonos">$0.00</td>
+                                    <td id="total-deducciones">$0.00</td>
+                                    <td id="total-nomina">$0.00</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>Historial de Nóminas</h3>
+                    </div>
+                    <div class="table-container">
+                        <table id="tabla-historial-nomina">
+                            <thead>
+                                <tr>
+                                    <th>Periodo</th>
+                                    <th>Fecha de Pago</th>
+                                    <th>Total Empleados</th>
+                                    <th>Monto Total</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+    <!-- Modales -->
+    <div id="modal-empleado" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="modal-empleado-titulo">Nuevo Empleado</h3>
+                <span class="close" onclick="cerrarModal('modal-empleado')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="form-empleado">
+                    <input type="hidden" id="empleado-id">
+                    
+                    <div class="form-tabs">
+                        <div class="tab-header">
+                            <div class="tab-btn active" data-tab="datos-personales">Datos Personales</div>
+                            <div class="tab-btn" data-tab="datos-laborales">Datos Laborales</div>
+                            <div class="tab-btn" data-tab="datos-bancarios">Datos Bancarios</div>
+                        </div>
+                        
+                        <div class="tab-content active" id="datos-personales">
+                            <div class="form-columns">
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="empleado-nombre">Nombre(s):</label>
+                                        <input type="text" id="empleado-nombre" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-apellidos">Apellidos:</label>
+                                        <input type="text" id="empleado-apellidos" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-fecha-nacimiento">Fecha de Nacimiento:</label>
+                                        <input type="date" id="empleado-fecha-nacimiento" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-genero">Género:</label>
+                                        <select id="empleado-genero" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="masculino">Masculino</option>
+                                            <option value="femenino">Femenino</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="empleado-telefono">Teléfono:</label>
+                                        <input type="tel" id="empleado-telefono" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-email">Correo Electrónico:</label>
+                                        <input type="email" id="empleado-email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-direccion">Dirección:</label>
+                                        <textarea id="empleado-direccion" rows="3" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="datos-laborales">
+                            <div class="form-columns">
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="empleado-departamento">Departamento:</label>
+                                        <select id="empleado-departamento" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="recepcion">Recepción</option>
+                                            <option value="housekeeping">Housekeeping</option>
+                                            <option value="restaurante">Restaurante</option>
+                                            <option value="mantenimiento">Mantenimiento</option>
+                                            <option value="administracion">Administración</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-puesto">Puesto:</label>
+                                        <input type="text" id="empleado-puesto" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-fecha-ingreso">Fecha de Ingreso:</label>
+                                        <input type="date" id="empleado-fecha-ingreso" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-tipo-contrato">Tipo de Contrato:</label>
+                                        <select id="empleado-tipo-contrato" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="indefinido">Indefinido</option>
+                                            <option value="temporal">Temporal</option>
+                                            <option value="practicas">Prácticas</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="empleado-sueldo">Sueldo Base Mensual:</label>
+                                        <input type="number" id="empleado-sueldo" min="0" step="0.01" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-jornada">Jornada Laboral:</label>
+                                        <select id="empleado-jornada" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="completa">Tiempo Completo</option>
+                                            <option value="parcial">Tiempo Parcial</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-horario">Horario:</label>
+                                        <input type="text" id="empleado-horario" placeholder="Ej: 9:00 - 18:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-estado">Estado:</label>
+                                        <select id="empleado-estado" required>
+                                            <option value="activo">Activo</option>
+                                            <option value="inactivo">Inactivo</option>
+                                            <option value="vacaciones">Vacaciones</option>
+                                            <option value="permiso">Permiso</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="datos-bancarios">
+                            <div class="form-columns">
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="empleado-banco">Banco:</label>
+                                        <input type="text" id="empleado-banco">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-cuenta">Número de Cuenta:</label>
+                                        <input type="text" id="empleado-cuenta">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="empleado-clabe">CLABE Interbancaria:</label>
+                                        <input type="text" id="empleado-clabe">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empleado-metodo-pago">Método de Pago:</label>
+                                        <select id="empleado-metodo-pago">
+                                            <option value="transferencia">Transferencia Bancaria</option>
+                                            <option value="efectivo">Efectivo</option>
+                                            <option value="cheque">Cheque</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="cerrarModal('modal-empleado')">Cancelar</button>
+                        <button type="button" class="btn-primary" onclick="guardarEmpleado()">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-asistencia" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Registrar Asistencia</h3>
+                <span class="close" onclick="cerrarModal('modal-asistencia')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="form-asistencia">
+                    <input type="hidden" id="asistencia-empleado-id">
+                    <input type="hidden" id="asistencia-fecha">
+                    
+                    <div class="form-group">
+                        <label for="asistencia-empleado-nombre">Empleado:</label>
+                        <input type="text" id="asistencia-empleado-nombre" readonly>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="asistencia-entrada">Hora de Entrada:</label>
+                            <input type="time" id="asistencia-entrada">
+                        </div>
+                        <div class="form-group">
+                            <label for="asistencia-salida">Hora de Salida:</label>
+                            <input type="time" id="asistencia-salida">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="asistencia-estado">Estado:</label>
+                        <select id="asistencia-estado" required>
+                            <option value="presente">Presente</option>
+                            <option value="ausente">Ausente</option>
+                            <option value="retardo">Retardo</option>
+                            <option value="permiso">Permiso</option>
+                            <option value="vacaciones">Vacaciones</option>
+                            <option value="incapacidad">Incapacidad</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="asistencia-observaciones">Observaciones:</label>
+                        <textarea id="asistencia-observaciones" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="cerrarModal('modal-asistencia')">Cancelar</button>
+                        <button type="button" class="btn-primary" onclick="guardarAsistencia()">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-detalle-nomina" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalle de Nómina</h3>
+                <span class="close" onclick="cerrarModal('modal-detalle-nomina')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="info-card">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Empleado:</span>
+                            <span id="detalle-nomina-empleado" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Departamento:</span>
+                            <span id="detalle-nomina-departamento" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Periodo:</span>
+                            <span id="detalle-nomina-periodo" class="info-value"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sueldo Base</td>
+                                <td id="detalle-nomina-sueldo">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td>Días Trabajados</td>
+                                <td id="detalle-nomina-dias">0</td>
+                            </tr>
+                            <tr class="subtotal">
+                                <td>Sueldo por Días Trabajados</td>
+                                <td id="detalle-nomina-sueldo-dias">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>Percepciones</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Bono de Puntualidad</td>
+                                <td id="detalle-nomina-bono-puntualidad">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td>Bono de Productividad</td>
+                                <td id="detalle-nomina-bono-productividad">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td>Horas Extra</td>
+                                <td id="detalle-nomina-horas-extra">$0.00</td>
+                            </tr>
+                            <tr class="subtotal">
+                                <td>Total Percepciones</td>
+                                <td id="detalle-nomina-total-percepciones">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>Deducciones</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Faltas</td>
+                                <td id="detalle-nomina-faltas">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td>Retardos</td>
+                                <td id="detalle-nomina-retardos">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td>Otros Descuentos</td>
+                                <td id="detalle-nomina-otros-descuentos">$0.00</td>
+                            </tr>
+                            <tr class="subtotal">
+                                <td>Total Deducciones</td>
+                                <td id="detalle-nomina-total-deducciones">$0.00</td>
+                            </tr>
+                            <tr class="total">
+                                <td><strong>Total a Pagar</strong></td>
+                                <td id="detalle-nomina-total">$0.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="cerrarModal('modal-detalle-nomina')">Cerrar</button>
+              
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-ver-nomina" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="ver-nomina-titulo">Nómina</h3>
+                <span class="close" onclick="cerrarModal('modal-ver-nomina')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="info-card">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Periodo:</span>
+                            <span id="ver-nomina-periodo" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fecha de Pago:</span>
+                            <span id="ver-nomina-fecha" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Total Empleados:</span>
+                            <span id="ver-nomina-empleados" class="info-value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Monto Total:</span>
+                            <span id="ver-nomina-monto" class="info-value"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="tabla-ver-nomina">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Empleado</th>
+                                <th>Departamento</th>
+                                <th>Sueldo Base</th>
+                                <th>Días Trabajados</th>
+                                <th>Bonos</th>
+                                <th>Deducciones</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Se llenará dinámicamente -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><strong>Totales</strong></td>
+                                <td id="ver-total-sueldos">$0.00</td>
+                                <td></td>
+                                <td id="ver-total-bonos">$0.00</td>
+                                <td id="ver-total-deducciones">$0.00</td>
+                                <td id="ver-total-nomina">$0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="cerrarModal('modal-ver-nomina')">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="rrhh.js"></script>
+</body>
+</html>

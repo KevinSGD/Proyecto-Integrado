@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizon Prime Hotel - Lujo y Modernidad</title>
+    <link rel="stylesheet" href="Interfaz.css">
+    <script src="Interfaz.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <div class="logo-icon">H</div>
+                    <span class="logo-text">Horizon Prime</span>
+                </a>
+            </div>
+
+            
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="../InterfazPrincipal/Interfaz.html" class="nav-link">Inicio</a></li>
+                    <li><a href="../InterfazPrincipal/Habitaciones.html" class="nav-link">Habitaciones</a></li>
+                    <li><a href="../InterfazPrincipal/Servicios.html" class="nav-link">Servicios</a></li>
+                </ul>
+                <button id="Login-btn" class="btn btn-light fade-in-up delay-2">Inicio Sesión</button>
+            </nav>
+
+           
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <span class="logo-text">Horizon Prime</span>
+            <button class="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="Interfaz.html" class="mobile-nav-link">Inicio</a></li>
+                <li><a href="../RegistroClientes/RegistroUsuarios.html" class="mobile-nav-link">Habitaciones</a></li>
+                <li><a href="../RegistroClientes/RegistroUsuarios.html" class="mobile-nav-link">Servicios</a></li>
+
+            </ul>
+        </nav>
+    </div>
+
+    
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="fade-in-up">Bienvenido a <span>Horizon Prime</span></h1>
+                <p class="fade-in-up delay-1">Una experiencia de lujo incomparable con vistas panorámicas y servicios
+                    exclusivos</p>
+
+            </div>
+        </div>
+
+        
+        <i class="fas fa-calendar"></i>
+        <div class="date-picker" id="arrival-date-picker">
+            
+        </div>
+        <i class="fas fa-calendar"></i>
+        <span class="date-display"></span>
+        </button>
+        <div class="date-picker" id="departure-date-picker">
+            
+        </div>
+        </div>
+        </div>
+
+        <div class="booking-field">
+
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+   
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="fade-in-up">Una experiencia de lujo incomparable</h2>
+                <p class="fade-in-up delay-1">Descubra por qué Horizon Prime es el destino preferido para los viajeros
+                    más exigentes</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card fade-in-up">
+                    <div class="feature-image">
+                        <img src="https://i.pinimg.com/736x/da/39/ce/da39ceccbd966c17c74c016e311e1ec2.jpg"
+                            alt="Habitaciones de Lujo">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Habitaciones de Lujo</h3>
+                        <p>Espacios elegantes con vistas panorámicas y comodidades premium para una estancia
+                            inolvidable.</p>
+                        <a href="../InterfazPrincipal/Habitaciones.html" class="feature-link">Descubrir más <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in-up delay-1">
+                    <div class="feature-image">
+                        <img src="https://static1.eskypartners.com/travelguide/1231823_11267134.jpg"
+                            alt="Gastronomía Exclusiva">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Gastronomía Exclusiva</h3>
+                        <p>Restaurantes de clase mundial con chefs reconocidos y una selección de sabores
+                            internacionales.</p>
+                        <a href="../InterfazPrincipal/Servicios.html" class="feature-link">Descubrir más <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in-up delay-2">
+                    <div class="feature-image">
+                        <img src="https://www.forbes.com.mx/2015/10/spa-and-massage-in-shelborne-wyndham-grand-miami-beach-hotel-top.jpg"
+                            alt="Spa & Bienestar">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Spa & Bienestar</h3>
+                        <p>Tratamientos rejuvenecedores y experiencias de bienestar en un entorno de tranquilidad
+                            absoluta.</p>
+                        <a href="../InterfazPrincipal/Servicios.html" class="feature-link">Descubrir más <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="amenities">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="fade-in-up">Servicios Exclusivos</h2>
+                <p class="fade-in-up delay-1">Disfrute de comodidades de primer nivel diseñadas para hacer su estancia
+                    inolvidable</p>
+            </div>
+
+            <div class="amenities-grid">
+                <div class="amenity-card fade-in-scale">
+                    <i class="fas fa-wifi"></i>
+                    <h3>Wi-Fi de Alta Velocidad</h3>
+                </div>
+                <div class="amenity-card fade-in-scale delay-1">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Restaurante Gourmet</h3>
+                </div>
+                <div class="amenity-card fade-in-scale delay-2">
+                    <i class="fas fa-car"></i>
+                    <h3>Servicio de Valet</h3>
+                </div>
+                <div class="amenity-card fade-in-scale delay-3">
+                    <i class="fas fa-swimming-pool"></i>
+                    <h3>Piscina Infinita</h3>
+                </div>
+                <div class="amenity-card fade-in-scale delay-4">
+                    <i class="fas fa-spa"></i>
+                    <h3>Spa de Lujo</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="cta">
+        <div class="container">
+            <h2 class="fade-in-up">Comience su experiencia de lujo hoy</h2>
+            <p class="fade-in-up delay-1">
+                Reserve directamente con nosotros para obtener los mejores precios y beneficios exclusivos
+            </p>
+            <button class="btn btn-light fade-in-up delay-2"
+                onclick="window.location.href='../Login/Login.html'">
+                Registrarse Ahora
+            </button>
+        </div>
+    </section>
+
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <div class="logo-icon">H</div>
+                        <span class="logo-text">Horizon Prime</span>
+                    </div>
+                    <p>Una experiencia de lujo incomparable con vistas panorámicas y servicios exclusivos.</p>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="Interfaz.html">Inicio</a></li>
+                        <li><a href="../InterfazPrincipal/Habitaciones.html">Habitaciones</a></li>
+                        <li><a href="../InterfazPrincipal/Servicios.html">Servicios</a></li>
+                        <li><a href="../../Proyecto/Login/Login.html">Administrativo</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; <span id="current-year"></span> Horizon Prime Hotel. Todos los derechos reservados.</p>
+                </div>
+            </div>
+    </footer>
+    <script src="Interfaz.js"></script>
+</body>
+
+</html>
