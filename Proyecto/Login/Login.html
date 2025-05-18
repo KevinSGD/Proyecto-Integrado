@@ -3,42 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
+    <title>Hotel Horizon Prime - Sistema ERP</title>
     <link rel="stylesheet" href="Login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>Iniciar Sesión</h1>
-            <p>Ingresa tus credenciales para continuar A</p> 
-        </div>
-        
-        <form id="loginForm">
-            <div class="input-group">
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" placeholder="ejemplo@correo.com">
-                <div class="error-message" id="emailError">Por favor ingresa un correo electrónico válido</div>
+    <div class="main-container">
+        <!-- Header con logo -->
+        <header class="site-header">
+            <div class="logo-container">
+                <div class="logo-circle">H</div>
+                <div class="logo-text">Horizon Prime</div>
             </div>
-            
-            <div class="input-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" placeholder="Ingresa tu contraseña">
-                <div class="error-message" id="passwordError">La contraseña es requerida</div>
-            </div>
-            
-            <div class="options">
-                <div class="remember-me">
-                    <input type="checkbox" id="remember">
-                    <label for="remember">Recordarme</label>
+            <button id="accessButton" class="access-button">
+                <i class="fas fa-sign-in-alt"></i> Acceder
+            </button>
+        </header>
+
+        <!-- Sección de bienvenida -->
+        <section class="welcome-section">
+            <div class="welcome-content">
+                <h1>Bienvenido al Sistema ERP</h1>
+                <p class="welcome-text">
+                    El Sistema de Gestión Empresarial de Hotel Horizon Prime le permite administrar de manera eficiente todas las operaciones del hotel, desde contabilidad y ventas hasta recursos humanos e inventario. Acceda con sus credenciales para comenzar a utilizar nuestro sistema integral.
+                </p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Gestión Contable</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-users"></i>
+                        <span>Recursos Humanos</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Ventas</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-boxes"></i>
+                        <span>Inventario</span>
+                    </div>
                 </div>
             </div>
-            
-            <button type="submit" class="login-button">Iniciar Sesión</button>
-        </form>
-        
-        <div class="register-link">
-            ¿No tienes una cuenta? <a href="#">Regístrate</a>
+        </section>
+
+        <!-- Asistente Virtual -->
+        <section class="assistant-section">
+            <div class="assistant-container">
+                <div class="assistant-header">
+                    <div class="assistant-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="assistant-info">
+                        <h3>Asistente Virtual</h3>
+                        <p>¿Necesitas ayuda con el sistema ERP?</p>
+                    </div>
+                    <button id="toggleChat" class="toggle-chat">
+                        <i class="fas fa-comments"></i>
+                    </button>
+                </div>
+                <div id="chatContainer" class="chat-container hidden">
+                    <div id="chatMessages" class="chat-messages">
+                        <div class="message assistant">
+                            <div class="message-content">
+                                <p>¡Hola! Soy el asistente virtual del ERP de Hotel Horizon Prime. ¿En qué puedo ayudarte hoy?</p>
+                            </div>
+                        </div>
+                        <div class="message assistant">
+                            <div class="message-content">
+                                <p>Puedes preguntarme sobre:</p>
+                                <ul>
+                                    <li>Cómo acceder a los módulos</li>
+                                    <li>Funciones del sistema</li>
+                                    <li>Problemas de acceso</li>
+                                    <li>Permisos de usuario</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="userInput" placeholder="Escribe tu pregunta aquí...">
+                        <button id="sendMessage">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal de Login -->
+        <div id="loginModal" class="login-modal">
+            <div class="login-modal-content">
+                <button id="closeLoginModal" class="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <!-- Formulario de Login (original) -->
+                <div class="login-container">
+                    <div class="login-header">
+                        <h1>Iniciar Sesión</h1>
+                        <p>Ingresa tus credenciales para continuar</p>
+                    </div>
+                    
+                    <form id="loginForm">
+                        <div class="input-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" placeholder="ejemplo@correo.com">
+                            <div class="error-message" id="emailError">Por favor ingresa un correo electrónico válido</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" id="password" placeholder="Ingresa tu contraseña">
+                            <div class="error-message" id="passwordError">La contraseña es requerida</div>
+                        </div>
+                        
+                        <div class="options">
+                            <div class="remember-me">
+                                <input type="checkbox" id="remember">
+                                <label for="remember">Recordarme</label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="login-button">Iniciar Sesión</button>
+                    </form>
+                    
+                    <div class="register-link">
+                        ¿Olvidaste tu contraseña? <a href="#">Contacta a soporte</a>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <p>&copy; 2025 Hotel Horizon Prime. Todos los derechos reservados.</p>
+        </footer>
     </div>
 
     <script src="Login.js"></script>
