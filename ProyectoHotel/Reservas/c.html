@@ -564,8 +564,9 @@
     document.addEventListener("DOMContentLoaded", function () {
   // Obtener el nombre de la habitación desde la URL
   const urlParams = new URLSearchParams(window.location.search);
-  const habitacion = urlParams.get('habitacion') || urlParams.get('tipo-habitacion') || "Habitación Deluxe"; // Intentar ambos parámetros posibles
+  const habitacion = urlParams.get('habitacion') || urlParams.get('tipo-habitacion') || "Habitación no seleccionada"; // Intentar ambos parámetros posibles
   
+   const url = `facturacion.html?nombre=${encodeURIComponent(nombre)}&email=${encodeURIComponent(email)}&telefono=${encodeURIComponent(telefono)}&fecha-entrada=${encodeURIComponent(fechaEntrada)}&fecha-salida=${encodeURIComponent(fechaSalida)}&huespedes=${encodeURIComponent(huespedes)}&tipo-habitacion=${encodeURIComponent(tipoHabitacion)}`;
   // Definir roomData con la habitación de la URL
   const roomData = {
     name: habitacion,

@@ -1,11 +1,10 @@
-<!DOCTYPE
-html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Horizon Prime Hotel - Check-in</title>
+  <title>Horizon Prime Hotel - Facturación</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +25,8 @@ html>
       --dark: #0f172a;
       --success: #10b981;
       --success-light: #d1fae5;
+      --danger: #ef4444;
+      --warning: #f59e0b;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       --transition: all 0.3s ease;
@@ -44,7 +45,6 @@ html>
       background-color: var(--light);
     }
 
-  
     .navbar {
       background-color: var(--white);
       box-shadow: var(--shadow);
@@ -109,7 +109,6 @@ html>
       color: var(--primary);
     }
 
-  
     .page-header {
       background: linear-gradient(to right, var(--primary-dark), var(--primary));
       color: var(--white);
@@ -129,7 +128,6 @@ html>
       margin: 0 auto;
     }
 
-
     .main-content {
       padding: 40px 0;
     }
@@ -140,7 +138,6 @@ html>
       gap: 30px;
     }
 
-    
     .card {
       background-color: var(--white);
       border-radius: 10px;
@@ -161,7 +158,6 @@ html>
       padding: 20px;
     }
 
-    
     .form-group {
       margin-bottom: 20px;
     }
@@ -198,8 +194,6 @@ html>
       flex: 1;
     }
 
-
-  
     .selected-services {
       margin-top: 20px;
     }
@@ -219,7 +213,9 @@ html>
     }
 
     .service-icon {
-      display: none;
+      margin-right: 10px;
+      color: var(--primary);
+      font-size: 1.2rem;
     }
 
     .service-details {
@@ -246,7 +242,7 @@ html>
     }
 
     .service-remove:hover {
-      color: #ef4444;
+      color: var(--danger);
     }
 
     .room-summary {
@@ -258,7 +254,9 @@ html>
     }
 
     .room-image {
-      display: none;
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
     }
 
     .room-details {
@@ -277,7 +275,6 @@ html>
       color: var(--gray);
     }
 
-    
     .price-summary {
       margin-top: 20px;
       background-color: var(--light-blue);
@@ -307,7 +304,6 @@ html>
       font-weight: 500;
     }
 
-    
     .payment-methods {
       display: flex;
       gap: 10px;
@@ -344,7 +340,6 @@ html>
       font-weight: 500;
     }
 
-    
     .btn {
       display: inline-block;
       padding: 12px 25px;
@@ -391,7 +386,6 @@ html>
       margin-top: 30px;
     }
 
-    
     .footer {
       background-color: var(--secondary);
       color: var(--light);
@@ -405,42 +399,104 @@ html>
       font-size: 0.9rem;
     }
 
-    
+    .tax-selector {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: var(--light-blue);
+      border-radius: 8px;
+    }
+
+    .tax-selector h4 {
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+    }
+
+    .tax-options {
+      display: flex;
+      gap: 10px;
+    }
+
+    .tax-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tax-option input {
+      margin-right: 5px;
+    }
+
+    .alert {
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+
+    .alert-info {
+      background-color: var(--light-blue);
+      color: var(--primary-dark);
+      border-left: 4px solid var(--primary);
+    }
+
+    .alert-success {
+      background-color: var(--success-light);
+      color: var(--success);
+      border-left: 4px solid var(--success);
+    }
+
+    .alert-warning {
+      background-color: #fef3c7;
+      color: var(--warning);
+      border-left: 4px solid var(--warning);
+    }
+
+    .invoice-number {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-top: 5px;
+    }
+
     @media (max-width: 768px) {
       .checkout-grid {
         grid-template-columns: 1fr;
       }
 
       .form-row {
-        grid-template-columns: 1fr;
+        flex-direction: column;
       }
 
       .btn-group {
         flex-direction: column;
+      }
+
+      .room-image {
+        width: 80px;
+        height: 60px;
       }
     }
   </style>
 </head>
 
 <body>
-  
   <header class="page-header">
     <div class="container">
-      <h1 class="page-title">Finalizar Reserva</h1>
-      <p class="page-subtitle">Complete sus datos para confirmar su reserva</p>
+      <h1 class="page-title">Facturación</h1>
+      <p class="page-subtitle">Confirme los detalles de su reserva y complete el pago</p>
     </div>
   </header>
 
-  
   <section class="main-content">
     <div class="container">
       <div class="checkout-grid">
-       
         <div class="card">
           <div class="card-header">
             Información del Huésped
           </div>
           <div class="card-body">
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i> Los datos han sido cargados desde su reserva previa.
+            </div>
             <form id="checkout-form">
               <div class="form-row">
                 <div class="form-group">
@@ -459,14 +515,49 @@ html>
                 <input type="tel" id="phone" class="form-control" required>
               </div>
 
-              <div class="form-group">
-                <label for="arrival-date">Fecha de llegada</label>
-                <input type="date" id="arrival-date" class="form-control" required>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="arrival-date">Fecha de llegada</label>
+                  <input type="date" id="arrival-date" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="departure-date">Fecha de salida</label>
+                  <input type="date" id="departure-date" class="form-control" required>
+                </div>
               </div>
 
               <div class="form-group">
-                <label for="departure-date">Fecha de salida</label>
-                <input type="date" id="departure-date" class="form-control" required>
+                <label for="invoice-type">Tipo de Factura</label>
+                <select id="invoice-type" class="form-control">
+                  <option value="personal">Factura Personal</option>
+                  <option value="business">Factura Empresarial</option>
+                </select>
+              </div>
+
+              <div id="business-fields" style="display: none;">
+                <div class="form-group">
+                  <label for="business-name">Nombre de la Empresa</label>
+                  <input type="text" id="business-name" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="tax-id">RFC</label>
+                  <input type="text" id="tax-id" class="form-control">
+                </div>
+              </div>
+
+              <div class="tax-selector">
+                <h4>Régimen Fiscal</h4>
+                <div class="tax-options">
+                  <div class="tax-option">
+                    <input type="radio" id="tax-standard" name="tax-regime" value="16" checked>
+                    <label for="tax-standard">Estándar (16%)</label>
+                  </div>
+                  <div class="tax-option">
+                    <input type="radio" id="tax-border" name="tax-regime" value="8">
+                    <label for="tax-border">Fronterizo (8%)</label>
+                  </div>
+                </div>
               </div>
 
               <div class="form-group">
@@ -496,41 +587,39 @@ html>
               </div>
 
               <div class="btn-group">
-                <a href="../Reservas/ServiciosExtra.html" class="btn btn-outline">Volver a servicios</a>
-                <a href="../Reservas/LoderCheckin.html" class="btn btn-primary">Confirmar Reserva</a>
-
+                <a href="servicios.html" class="btn btn-outline">Volver a servicios</a>
+                <button type="submit" class="btn btn-primary">Generar Factura</button>
               </div>
             </form>
           </div>
         </div>
 
-        
         <div class="card">
           <div class="card-header">
-            Resumen de Reserva
+            Resumen de Facturación
           </div>
           <div class="card-body">
-           
+            <div class="invoice-number">Factura #: <span id="invoice-number">INV-2025-0001</span></div>
+            
             <div class="room-summary">
-              <img src="https://placehold.co/120x20hite" alt="Habitación Deluxe" class="room-image" id="room-image">
+              <img src="https://placehold.co/120x80/blue/white" alt="Habitación Deluxe" class="room-image" id="room-image">
               <div class="room-details">
-                <h3 class="room-name" id="nombreHabitacion">Habitación Deluxe</h3>
-                <p class="room-info" id="room-info"></p>
+                <h3 class="room-name" id="room-name">Habitación Deluxe</h3>
+                <p class="room-info" id="room-info">2 adultos · 5 noches</p>
               </div>
             </div>
 
-            
             <div class="selected-services">
               <h3>Servicios seleccionados</h3>
               <ul class="service-list" id="service-list">
+                <!-- Los servicios se cargarán dinámicamente -->
               </ul>
             </div>
 
-           
             <div class="price-summary">
               <div class="price-row">
                 <div class="price-label">Habitación</div>
-                <div class="price-value" id="room-price">$1.200.000</div>
+                <div class="price-value" id="room-price">$0.00</div>
               </div>
 
               <div class="price-row">
@@ -539,13 +628,18 @@ html>
               </div>
 
               <div class="price-row">
-                <div class="price-label">Impuestos (16%)</div>
-                <div class="price-value" id="tax-price">$280.00</div>
+                <div class="price-label">Subtotal</div>
+                <div class="price-value" id="subtotal-price">$0.00</div>
+              </div>
+
+              <div class="price-row">
+                <div class="price-label">Impuestos (<span id="tax-rate">16</span>%)</div>
+                <div class="price-value" id="tax-price">$0.00</div>
               </div>
 
               <div class="price-row">
                 <div class="price-label">Total</div>
-                <div class="price-value" id="total-price">$1.600.000</div>
+                <div class="price-value" id="total-price">$0.00</div>
               </div>
             </div>
           </div>
@@ -553,7 +647,6 @@ html>
       </div>
     </div>
   </section>
-
 
   <footer class="footer">
     <div class="container">
@@ -563,193 +656,288 @@ html>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-  fetch("reservas.php")
-    .then(response => response.json())
-    .then(data => {
-      if (!data.error) {
-        document.getElementById("first-name").value = data.nombre;
-        document.getElementById("email").value = data.email;
-        document.getElementById("phone").value = data.telefono;
-        document.getElementById("arrival-date").value = data.fecha_entrada;
-        document.getElementById("departure-date").value = data.fecha_salida;
+      // Cargar datos de reserva desde localStorage o sessionStorage
+      // En un entorno real, estos datos vendrían de una API o base de datos
+      loadReservationData();
       
-          // Calcular noches de estadía
-          const checkIn = new Date(data.fecha_entrada);
-        const checkOut = new Date(data.fecha_salida);
-        const nights = Math.max((checkOut - checkIn) / (1000 * 60 * 60 * 24), 1); // Asegurar mínimo 1 noche
+      // Inicializar la página
+      initPage();
+      
+      // Actualizar año actual en el footer
+      document.getElementById("current-year").textContent = new Date().getFullYear();
+      
+      // Manejar cambio en tipo de factura
+      document.getElementById('invoice-type').addEventListener('change', function() {
+        const businessFields = document.getElementById('business-fields');
+        if (this.value === 'business') {
+          businessFields.style.display = 'block';
+        } else {
+          businessFields.style.display = 'none';
+        }
+      });
+      
+      // Manejar cambio en régimen fiscal
+      document.querySelectorAll('input[name="tax-regime"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          const taxRate = this.value;
+          document.getElementById('tax-rate').textContent = taxRate;
+          updatePrices();
+        });
+      });
+      
+      // Manejar envío del formulario
+      document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        roomData.nights = nights;
+        // Mostrar mensaje de éxito
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success';
+        alert.innerHTML = '<i class="fas fa-check-circle"></i> Factura generada con éxito. Se ha enviado una copia a su correo electrónico.';
         
-        updateRoomDisplay(); // Asegurar que el precio se actualiza con las noches correctas
+        this.insertBefore(alert, this.firstChild);
+        
+        // Desplazarse al inicio del formulario
+        window.scrollTo({
+          top: this.offsetTop - 100,
+          behavior: 'smooth'
+        });
+        
+        // Generar nuevo número de factura
+        const invoiceNumber = 'INV-' + new Date().getFullYear() + '-' + 
+          Math.floor(1000 + Math.random() * 9000);
+        document.getElementById('invoice-number').textContent = invoiceNumber;
+      });
+    });
+
+    // Función para cargar datos de reserva
+    function loadReservationData() {
+      // Simulamos la carga de datos desde otra interfaz
+      // En un entorno real, estos datos vendrían de una API, localStorage, sessionStorage, etc.
+      
+      // Intentar cargar desde sessionStorage primero
+      const storedReservation = sessionStorage.getItem('reservationData');
+      
+      if (storedReservation) {
+        const reservationData = JSON.parse(storedReservation);
+        
+        // Llenar el formulario con los datos de la reserva
+        document.getElementById("first-name").value = reservationData.nombre || '';
+        document.getElementById("email").value = reservationData.email || '';
+        document.getElementById("phone").value = reservationData.telefono || '';
+        
+        if (reservationData.fecha_entrada) {
+          document.getElementById("arrival-date").value = reservationData.fecha_entrada;
+        }
+        
+        if (reservationData.fecha_salida) {
+          document.getElementById("departure-date").value = reservationData.fecha_salida;
+        }
+        
+        // Si no hay datos en sessionStorage, usamos datos de ejemplo
       } else {
-        console.error("No se encontraron reservas");
+        // Datos de ejemplo para demostración
+        const demoData = {
+          nombre: "Juan Pérez",
+          email: "juan.perez@ejemplo.com",
+          telefono: "555-123-4567",
+          fecha_entrada: formatDate(new Date()),
+          fecha_salida: formatDate(new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)) // 5 días después
+        };
+        
+        document.getElementById("first-name").value = demoData.nombre;
+        document.getElementById("email").value = demoData.email;
+        document.getElementById("phone").value = demoData.telefono;
+        document.getElementById("arrival-date").value = demoData.fecha_entrada;
+        document.getElementById("departure-date").value = demoData.fecha_salida;
+        
+        // Guardar en sessionStorage para uso futuro
+        sessionStorage.setItem('reservationData', JSON.stringify(demoData));
       }
-    })
-    .catch(error => console.error("Error:", error));
-
-  // Obtener el nombre de la habitación desde la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const habitacion = urlParams.get('habitacion') || "Habitación Deluxe"; // Valor por defecto
-
-  // Definir roomData asegurando que la habitación venga de la URL
-  const roomData = {
-    name: habitacion,  
-    image: "https://placehold.co/600x400/blue/white",
-    price: 350,
-    nights: 1
-  };
-
-  // Mostrar el nombre de la habitación en el HTML
-  document.getElementById("nombreHabitacion").textContent = roomData.name;
-});
-
-// Actualizar el año automáticamente
-document.getElementById("current-year").textContent = new Date().getFullYear();
-
-    const availableServices = [
-      { id: 1, name: "Servicio a la habitación", price: 50, icon: "fas fa-concierge-bell", priceType: "por_dia" },
-      { id: 2, name: "Experiencia Gastronómica", price: 120, icon: "fas fa-utensils", priceType: "por_dia" },
-      { id: 3, name: "Traslado Ejecutivo", price: 75, icon: "fas fa-car-side", priceType: "por_trayecto" },
-      { id: 4, name: "Spa Premium", price: 90, icon: "fas fa-spa", priceType: "por_persona" },
-      { id: 5, name: "Tour Guiado", price: 60, icon: "fas fa-map-marked-alt", priceType: "por_persona" },
-      { id: 6, name: "Acceso VIP Club", price: 40, icon: "fas fa-glass-cheers", priceType: "por_dia" }
-    ];
-
-    function getSelectedServices() {
-      const storedServices = localStorage.getItem('selectedServices');
-      return storedServices ? JSON.parse(storedServices) : [];
     }
 
-    
+    // Función para formatear fecha en formato YYYY-MM-DD
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    // Función para calcular la duración de la estancia en noches
+    function calculateNights(startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diffTime = Math.abs(end - start);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays;
+    }
+
+    // Función para cargar los servicios seleccionados
+    function loadSelectedServices() {
+      // Intentar cargar desde localStorage
+      const storedServices = localStorage.getItem('selectedServices');
+      let selectedServices = [];
+      
+      if (storedServices) {
+        try {
+          selectedServices = JSON.parse(storedServices);
+        } catch (e) {
+          console.error("Error al parsear servicios:", e);
+          selectedServices = [];
+        }
+      }
+      
+      // Si no hay servicios en localStorage, usar datos de ejemplo
+      if (!selectedServices || selectedServices.length === 0) {
+        selectedServices = [
+          { id: 1, title: "Servicio a la habitación", price: "$50.00", icon: "fas fa-concierge-bell" },
+          { id: 3, title: "Traslado Ejecutivo", price: "$75.00", icon: "fas fa-car-side" },
+          { id: 4, title: "Spa Premium", price: "$90.00", icon: "fas fa-spa" }
+        ];
+        
+        // Guardar en localStorage para uso futuro
+        localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+      }
+      
+      return selectedServices;
+    }
+
+    // Función para renderizar los servicios seleccionados
     function renderSelectedServices() {
       const serviceList = document.getElementById('service-list');
-      serviceList.innerHTML = ''; 
-
-      const selectedServices = getSelectedServices();
-      let totalServicesPrice = 0;
-
+      serviceList.innerHTML = '';
+      
+      const selectedServices = loadSelectedServices();
+      
       if (selectedServices.length === 0) {
         serviceList.innerHTML = '<p>No se han seleccionado servicios adicionales.</p>';
-        return;
+        return 0;
       }
-
+      
+      let totalServicesPrice = 0;
+      
       selectedServices.forEach(service => {
-       
-        const priceNumber = parseFloat(service.price.replace(/[^0-9.]/g, ""));
-        totalServicesPrice += priceNumber;
-
-       
+        // Extraer el precio numérico
+        const priceString = service.price.replace(/[^\d.]/g, '');
+        const priceNumber = parseFloat(priceString);
+        
+        if (!isNaN(priceNumber)) {
+          totalServicesPrice += priceNumber;
+        }
+        
+        // Crear elemento de servicio
         const serviceItem = document.createElement('li');
         serviceItem.className = 'service-item';
         serviceItem.innerHTML = `
-  <div class="service-details">
-    <div class="service-name">${service.title}</div>
-    <div class="service-price">${service.price}</div>
-  </div>
-  <button class="service-remove" data-title="${service.title}">
-    <i class="fas fa-times"></i>
-  </button>
-`;
-
-
+          <div class="service-icon">
+            <i class="${service.icon || 'fas fa-concierge-bell'}"></i>
+          </div>
+          <div class="service-details">
+            <div class="service-name">${service.title}</div>
+            <div class="service-price">${service.price}</div>
+          </div>
+          <button class="service-remove" data-id="${service.id}">
+            <i class="fas fa-times"></i>
+          </button>
+        `;
+        
         serviceList.appendChild(serviceItem);
       });
-
-     
-      document.getElementById('services-price').textContent = `$${totalServicesPrice.toFixed(2)}`;
-
       
-      updateTotalPrice(roomData.price * roomData.nights, totalServicesPrice);
-
-   
+      // Agregar event listeners a los botones de eliminar
       document.querySelectorAll('.service-remove').forEach(button => {
-        button.addEventListener('click', function () {
-          const serviceTitle = this.getAttribute('data-title');
-          removeService(serviceTitle);
+        button.addEventListener('click', function() {
+          const serviceId = parseInt(this.getAttribute('data-id'));
+          removeService(serviceId);
         });
       });
-    }
-
-    function removeService(serviceId) {
-      const selectedServiceIds = getSelectedServices();
-      const updatedServices = selectedServiceIds.filter(id => id !== serviceId);
-
       
-      localStorage.setItem('selectedServices', JSON.stringify(updatedServices));
-
-    
-      renderSelectedServices();
+      return totalServicesPrice;
     }
 
-   
-    function updateTotalPrice(roomPrice, servicesPrice) {
-  const subtotal = roomPrice + servicesPrice;
-  const tax = subtotal * 0.16; // 16% de impuesto
-  const total = subtotal + tax;
+    // Función para eliminar un servicio
+    function removeService(serviceId) {
+      const selectedServices = loadSelectedServices();
+      const updatedServices = selectedServices.filter(service => service.id !== serviceId);
+      
+      // Guardar servicios actualizados
+      localStorage.setItem('selectedServices', JSON.stringify(updatedServices));
+      
+      // Volver a renderizar y actualizar precios
+      renderSelectedServices();
+      updatePrices();
+    }
 
-  // Convertir el total a formato moneda con separadores de miles
-  const formattedTotal = new Intl.NumberFormat('es-CO', {
-    style: 'currency',
-    currency: 'COP',
-    minimumFractionDigits: 0
-  }).format(total);
+    // Función para actualizar los precios
+    function updatePrices() {
+      // Obtener fechas de entrada y salida
+      const arrivalDate = document.getElementById('arrival-date').value;
+      const departureDate = document.getElementById('departure-date').value;
+      
+      // Calcular número de noches
+      const nights = calculateNights(arrivalDate, departureDate);
+      
+      // Precio por noche (podría venir de otra interfaz)
+      const roomPricePerNight = 350;
+      
+      // Calcular precio total de la habitación
+      const roomTotalPrice = roomPricePerNight * nights;
+      
+      // Renderizar servicios y obtener precio total
+      const servicesPriceTotal = renderSelectedServices();
+      
+      // Calcular subtotal
+      const subtotal = roomTotalPrice + servicesPriceTotal;
+      
+      // Obtener tasa de impuesto seleccionada
+      const taxRate = parseFloat(document.querySelector('input[name="tax-regime"]:checked').value);
+      
+      // Calcular impuestos
+      const tax = subtotal * (taxRate / 100);
+      
+      // Calcular total
+      const total = subtotal + tax;
+      
+      // Actualizar elementos en la interfaz
+      document.getElementById('room-price').textContent = `$${roomTotalPrice.toFixed(2)}`;
+      document.getElementById('services-price').textContent = `$${servicesPriceTotal.toFixed(2)}`;
+      document.getElementById('subtotal-price').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('tax-price').textContent = `$${tax.toFixed(2)}`;
+      document.getElementById('total-price').textContent = `$${total.toFixed(2)}`;
+      
+      // Actualizar información de la habitación
+      document.getElementById('room-info').textContent = `2 adultos · ${nights} noches`;
+    }
 
-  // Mostrar valores actualizados
-  document.getElementById('room-price').textContent = `$${roomPrice.toLocaleString('es-CO')}`;
-  document.getElementById('tax-price').textContent = `$${tax.toLocaleString('es-CO')}`;
-  document.getElementById('total-price').textContent = formattedTotal;
-}
-
-    function updateRoomDisplay() {
-      // Update room details in the UI
+    // Función para inicializar la página
+    function initPage() {
+      // Datos de la habitación (podrían venir de otra interfaz)
+      const roomData = {
+        name: "Habitación Deluxe Ocean View",
+        image: "https://placehold.co/120x80/blue/white"
+      };
+      
+      // Establecer datos de la habitación
       document.getElementById('room-name').textContent = roomData.name;
-      document.getElementById('room-info').textContent = `${roomData.adults} adultos · ${roomData.nights} noches`;
       document.getElementById('room-image').src = roomData.image;
       document.getElementById('room-image').alt = roomData.name;
       
-      // Update room price in summary
-      const roomTotalPrice = roomData.price * roomData.nights;
-      document.getElementById('room-price').textContent = `$${roomTotalPrice.toFixed(2)}`;
-      
-      // Update total price
-      const servicesPrice = parseFloat(document.getElementById('services-price').textContent.replace(/[^0-9.]/g, "")) || 0;
-      updateTotalPrice(roomTotalPrice, servicesPrice);
-    }
-
-    // Function to initialize the page
-    function initPage() {
-      // Render selected services
-      renderSelectedServices();
-
-      // Set default dates
-      const today = new Date();
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-
-      const checkoutDate = new Date(today);
-      checkoutDate.setDate(checkoutDate.getDate() + roomData.nights);
-
-      document.getElementById('arrival-date').valueAsDate = today;
-      document.getElementById('departure-date').valueAsDate = checkoutDate;
-
-      // Payment method selection
+      // Configurar métodos de pago
       const paymentMethods = document.querySelectorAll('.payment-method');
       paymentMethods.forEach(method => {
-        method.addEventListener('click', function () {
+        method.addEventListener('click', function() {
           paymentMethods.forEach(m => m.classList.remove('active'));
           this.classList.add('active');
         });
       });
-
-      // Form submission
-      document.getElementById('checkout-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        alert('¡Reserva completada con éxito! Gracias por elegir Horizon Prime Hotel.');
-      });
+      
+      // Actualizar precios iniciales
+      updatePrices();
+      
+      // Agregar event listeners para actualizar precios cuando cambian las fechas
+      document.getElementById('arrival-date').addEventListener('change', updatePrices);
+      document.getElementById('departure-date').addEventListener('change', updatePrices);
     }
-
-    // Initialize the page when DOM is loaded
-    document.addEventListener('DOMContentLoaded', initPage);
   </script>
 </body>
 
